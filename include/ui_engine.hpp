@@ -6,6 +6,7 @@
 #include <raylib.h>
 #include <string>
 #include <unordered_map>
+#include <variant>
 
 namespace UIEngine {
     namespace element_context {
@@ -13,17 +14,13 @@ namespace UIEngine {
           public:
             virtual ~Element() = default;
         };
-        class Dropdown : public Element {
-          public:
-            bool open{ false }; // dropdown is open
-        };
         class Button : public Element {
           public:
             bool hovered{ false }; // mouse if hovering over the button
             bool active{ true }; // button is active
             bool pressed{ false }; // mouse button was clicked but never released
         };
-    }; // namespace element_context
+    };
 
     struct UITheme {
         std::unordered_map<std::string, Color> colors;
@@ -61,18 +58,12 @@ namespace UIEngine {
     };
 
     namespace elements {
-        void dropdown(
-            ClayMan& clay,
-            UIEngine& UI_engine,
-            const std::string& element_id,
-            const std::function<void()>& children_func
-        );
         bool button(
             ClayMan& clay,
             UIEngine& UI_engine,
             const std::string& element_id,
-            const std::function<void()>& children_func
+            const std::variant<std::string, std::function<void()>> children_input
         );
-    }; // namespace elements
+    };
 
-} // namespace UIEngine
+}
