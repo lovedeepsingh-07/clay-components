@@ -1,6 +1,8 @@
 #include "clay_raylib.hpp"
 #include "clayman.hpp"
 #include "layout_components.hpp"
+#include "utils.hpp"
+#include <iostream>
 
 int main() {
     std::array<Font, 1> font_list;
@@ -16,6 +18,9 @@ int main() {
     auto layout_engine = LayoutEngine::LayoutEngine{};
     layout_engine.setup();
     layout_engine.set_theme("dark");
+
+    std::string input_default_text = "";
+    std::string input_custom_text = "";
 
     while (!WindowShouldClose()) {
         Vector2 mouse_pos = GetMousePosition();
@@ -41,6 +46,7 @@ int main() {
                     .sizing = { CLAY_SIZING_GROW(0), CLAY_SIZING_GROW(0) },
                     .padding = CLAY_PADDING_ALL(8),
                     .childGap = 8,
+                    .childAlignment = { .x = CLAY_ALIGN_X_LEFT, .y = CLAY_ALIGN_Y_CENTER },
                     .layoutDirection = CLAY_LEFT_TO_RIGHT,
                 } });
             {
@@ -49,7 +55,7 @@ int main() {
                         .engine(layout_engine)
                         .id("theme_button")
                         .variant("primary")
-                        .children_input("theme")
+                        .text("theme")
                         .build()) {
                     if (layout_engine.get_curr_theme() == "dark") {
                         layout_engine.set_theme("light");
@@ -62,18 +68,19 @@ int main() {
                         .engine(layout_engine)
                         .id("debug_button")
                         .variant("primary")
-                        .children_input("debug")
+                        .text("debug")
                         .build()) {
                     Clay_SetDebugModeEnabled(!Clay_IsDebugModeEnabled());
                 }
             }
             clay.closeElement();
             clay.openElement(Clay_ElementDeclaration{
-                .id = clay.hashID("BUTTONS_DISPLAY_CONTAINER"),
+                .id = clay.hashID("BUTTONS_DEMO_CONTAINER"),
                 .layout = {
                     .sizing = { CLAY_SIZING_GROW(0), CLAY_SIZING_GROW(0) },
                     .padding = CLAY_PADDING_ALL(8),
                     .childGap = 8,
+                    .childAlignment = { .x = CLAY_ALIGN_X_LEFT, .y = CLAY_ALIGN_Y_CENTER },
                     .layoutDirection = CLAY_LEFT_TO_RIGHT,
                 } });
             {
@@ -82,53 +89,116 @@ int main() {
                     .engine(layout_engine)
                     .id("demo_button_primary")
                     .variant("primary")
-                    .children_input("primary")
+                    .text("primary")
                     .build();
                 layout_components::button()
                     .clay_man(clay)
                     .engine(layout_engine)
                     .id("demo_button_secondary")
                     .variant("secondary")
-                    .children_input("secondary")
+                    .text("secondary")
                     .build();
                 layout_components::button()
                     .clay_man(clay)
                     .engine(layout_engine)
                     .id("demo_button_muted")
                     .variant("muted")
-                    .children_input("muted")
+                    .text("muted")
                     .build();
                 layout_components::button()
                     .clay_man(clay)
                     .engine(layout_engine)
                     .id("demo_button_accent")
                     .variant("accent")
-                    .children_input("accent")
+                    .text("accent")
                     .build();
                 layout_components::button()
                     .clay_man(clay)
                     .engine(layout_engine)
                     .id("demo_button_destructive")
                     .variant("destructive")
-                    .children_input("destructive")
+                    .text("destructive")
                     .build();
-                // NOTE: based on the current setup, I can only manage to add custom
-                // styles for `layout` and `cornerRadius` because there are some
-                // things that are difficult to get allow customization,
-                // e.g I don't know how to allow user to add styles for when a button is hovered
                 layout_components::button()
                     .clay_man(clay)
                     .engine(layout_engine)
                     .id("demo_button_custom")
                     .style(Clay_ElementDeclaration{
-                        .layout = { .sizing = { .width = { 120 }, .height = { 20 } },
-                                    .padding = CLAY_PADDING_ALL(2),
+                        .layout = { .sizing = { .width = CLAY_SIZING_FIT(120),
+                                                .height = CLAY_SIZING_FIT(20) },
+                                    .padding = { .left = 8, .right = 8, .top = 6, .bottom = 6 },
                                     .childAlignment = { .x = CLAY_ALIGN_X_CENTER, .y = CLAY_ALIGN_Y_CENTER },
                                     .layoutDirection = CLAY_TOP_TO_BOTTOM },
+                        .backgroundColor = app_utils::raylib_to_clay(MAROON),
                         .cornerRadius = CLAY_CORNER_RADIUS(0),
                     })
-                    .children_input("custom")
                     .build();
+                {
+                    clay.textElement(
+                        "custom text",
+                        Clay_TextElementConfig{
+                            .textColor = app_utils::raylib_to_clay(YELLOW),
+                            .fontId = 0,
+                            .fontSize = 25,
+                        }
+                    );
+                }
+                layout_components::close_button(clay);
+            }
+            clay.closeElement();
+
+            clay.openElement(Clay_ElementDeclaration{
+                .id = clay.hashID("INPUT_DEMO_CONTAINER"),
+                .layout = {
+                    .sizing = { CLAY_SIZING_GROW(0), CLAY_SIZING_GROW(0) },
+                    .padding = CLAY_PADDING_ALL(8),
+                    .childGap = 8,
+                    .childAlignment = { .x = CLAY_ALIGN_X_LEFT, .y = CLAY_ALIGN_Y_CENTER },
+                    .layoutDirection = CLAY_LEFT_TO_RIGHT,
+                } });
+            {
+                layout_components::input()
+                    .clay_man(clay)
+                    .engine(layout_engine)
+                    .id("demo_input_default")
+                    .placeholder("input_box")
+                    .value(input_default_text)
+                    .build();
+                clay.textElement(
+                    "input_default_text: " + input_default_text,
+                    Clay_TextElementConfig{
+                        .textColor = app_utils::raylib_to_clay(layout_engine.get_color("foreground")),
+                        .fontId = 0,
+                        .fontSize = 25,
+                    }
+                );
+                layout_components::input()
+                    .clay_man(clay)
+                    .engine(layout_engine)
+                    .id("demo_input_custom")
+                    .style(Clay_ElementDeclaration{
+                        .layout = { .sizing = { .width = CLAY_SIZING_FIT(160),
+                                                .height = CLAY_SIZING_FIT(37) },
+                                    .padding = { .left = 8, .right = 8, .top = 6, .bottom = 6 },
+                                    .childAlignment = { .x = CLAY_ALIGN_X_LEFT, .y = CLAY_ALIGN_Y_CENTER },
+                                    .layoutDirection = CLAY_TOP_TO_BOTTOM },
+                        .backgroundColor = app_utils::raylib_to_clay(MAROON),
+                        .cornerRadius = CLAY_CORNER_RADIUS(0),
+                        .border = { .color = app_utils::raylib_to_clay(YELLOW),
+                                    .width = Clay_BorderWidth{ 1, 1, 1, 1, 0 } } })
+                    .placeholder("custom_input")
+                    .value(input_custom_text)
+                    .build();
+                auto* input_custom_ctx =
+                    layout_engine.get_element<LayoutEngine::component_context::Input>("demo_input_custom");
+                clay.textElement(
+                    "input_custom_text: " + input_custom_ctx->value,
+                    Clay_TextElementConfig{
+                        .textColor = app_utils::raylib_to_clay(layout_engine.get_color("foreground")),
+                        .fontId = 0,
+                        .fontSize = 25,
+                    }
+                );
             }
             clay.closeElement();
         }

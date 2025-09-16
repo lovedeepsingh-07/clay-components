@@ -3,21 +3,6 @@
 #include <array>
 
 layout_components::_button_builder&
-layout_components::_button_builder::clay_man(ClayMan& clay) {
-    this->_clay = &clay;
-    return *this;
-}
-layout_components::_button_builder&
-layout_components::_button_builder::engine(LayoutEngine::LayoutEngine& engine) {
-    this->_engine = &engine;
-    return *this;
-}
-layout_components::_button_builder&
-layout_components::_button_builder::id(const std::string& id) {
-    this->_id = id;
-    return *this;
-}
-layout_components::_button_builder&
 layout_components::_button_builder::variant(const std::string& variant) {
     this->_variant = variant;
     return *this;
@@ -29,10 +14,10 @@ layout_components::_button_builder::style(Clay_ElementDeclaration style) {
     this->_style.id = this->_clay->hashID(this->_id);
     return *this;
 }
-layout_components::_button_builder& layout_components::_button_builder::children_input(
-    std::variant<std::string, std::function<void()>> children_input
-) {
-    this->_children_input = children_input;
+layout_components::_button_builder&
+layout_components::_button_builder::text(const std::string& text) {
+    this->_text_button = true;
+    this->_text = text;
     return *this;
 }
 
@@ -41,6 +26,25 @@ bool layout_components::_button_builder::build() {
     auto* ctx = _engine->get_element<LayoutEngine::component_context::Button>(_id);
     bool button_clicked = false;
 
+    // button state configuration
+    bool hovering = _clay->pointerOver(_id);
+    if (hovering && !ctx->hovered) {
+        ctx->hovered = true;
+    }
+    if (!hovering && ctx->hovered) {
+        ctx->hovered = false;
+    }
+    if (hovering && IsMouseButtonPressed(MOUSE_BUTTON_LEFT)) {
+        ctx->pressed = true;
+    }
+    if (hovering && IsMouseButtonReleased(MOUSE_BUTTON_LEFT) && ctx->pressed) {
+        button_clicked = true;
+    }
+    if (IsMouseButtonReleased(MOUSE_BUTTON_LEFT) && ctx->pressed) {
+        ctx->pressed = false;
+    }
+
+    // button variant
     std::array<std::string, 5> accepted_variants = { "primary", "secondary", "muted",
                                                      "accent", "destructive" };
     std::string button_variant =
@@ -49,6 +53,14 @@ bool layout_components::_button_builder::build() {
         ? _variant
         : "primary"; // if the variant is valid, the we take that or else, we default to primary
 
+    // default color values
+    Color button_background_color =
+        ColorAlpha(_engine->get_color(button_variant), ((ctx->hovered || ctx->pressed) ? 0.85 : 1));
+    Color button_foreground_color =
+        _engine->get_color((_custom_styled ? "foreground" : button_variant + "-foreground"));
+    Color button_border_color =
+        ColorAlpha(_engine->get_color("border"), ((ctx->hovered || ctx->pressed) ? 0.85 : 1));
+
     // default button style
     auto button_style = Clay_ElementDeclaration{
         .id = _clay->hashID(_id),
@@ -56,72 +68,46 @@ bool layout_components::_button_builder::build() {
                     .padding = { .left = 8, .right = 8, .top = 6, .bottom = 6 },
                     .childAlignment = { .x = CLAY_ALIGN_X_CENTER, .y = CLAY_ALIGN_Y_CENTER },
                     .layoutDirection = CLAY_TOP_TO_BOTTOM },
-        .backgroundColor = game_utils::raylib_to_clay(
-            ColorAlpha(_engine->get_color(button_variant), ((ctx->hovered || ctx->pressed) ? 0.85 : 1))
-        ),
+        .backgroundColor = app_utils::raylib_to_clay(button_background_color),
         .cornerRadius = CLAY_CORNER_RADIUS(_engine->get_radius()),
-        .border = { .color = game_utils::raylib_to_clay(ColorAlpha(
-                        _engine->get_color("border"), ((ctx->hovered || ctx->pressed) ? 0.85 : 1)
-                    )),
+        .border = { .color = app_utils::raylib_to_clay(button_border_color),
                     .width = { 1, 1, 1, 1, 0 } }
     };
 
+    // apply custom styles
     if (_custom_styled) {
         button_style.layout = _style.layout;
+        if (app_utils::is_color_set(_style.backgroundColor)) {
+            button_style.backgroundColor = _style.backgroundColor;
+        }
+        if (app_utils::is_color_set(_style.border.color)) {
+            button_style.border.color = _style.border.color;
+        }
         button_style.cornerRadius = _style.cornerRadius;
     }
 
     _clay->openElement(button_style);
     {
-        // button state configuration
-        bool hovering = this->_clay->pointerOver(this->_id);
-        if (hovering && !ctx->hovered) {
-            ctx->hovered = true;
-        }
-        if (!hovering && ctx->hovered) {
-            ctx->hovered = false;
-        }
-        if (hovering && IsMouseButtonPressed(MOUSE_BUTTON_LEFT)) {
-            ctx->pressed = true;
-        }
-        if (hovering && IsMouseButtonReleased(MOUSE_BUTTON_LEFT) && ctx->pressed) {
-            button_clicked = true;
-        }
-        if (IsMouseButtonReleased(MOUSE_BUTTON_LEFT) && ctx->pressed) {
-            ctx->pressed = false;
-        }
-
-        // rendering children
-        std::visit(
-            [&](auto&& arg) {
-                using curr_type = std::decay_t<decltype(arg)>;
-                if constexpr (std::is_same_v<curr_type, std::string>) {
-                    // text element
-                    this->_clay->textElement(
-                        arg,
-                        Clay_TextElementConfig{
-                            .textColor =
-                                game_utils::raylib_to_clay(this->_engine->get_color(
-                                    (_custom_styled ? "foreground" : button_variant + "-foreground")
-                                )),
-                            .fontId = 0,
-                            .fontSize = 25,
-                        }
-                    );
+        if (_text_button) {
+            _clay->textElement(
+                _text,
+                Clay_TextElementConfig{
+                    .textColor = app_utils::raylib_to_clay(button_foreground_color),
+                    .fontId = 0,
+                    .fontSize = 25,
                 }
-                if constexpr (std::is_same_v<curr_type, std::function<void()>>) {
-                    // children element
-                    arg();
-                }
-            },
-            _children_input
-        );
+            );
+        }
     }
-    this->_clay->closeElement();
-
+    if (_text_button) {
+        _clay->closeElement();
+    }
     return button_clicked;
 }
 
 layout_components::_button_builder layout_components::button() {
     return _button_builder{};
 };
+void layout_components::close_button(ClayMan& clay) {
+    clay.closeElement();
+}

@@ -17,6 +17,11 @@ namespace LayoutEngine {
             bool muted{ false }; // button is muted
             bool pressed{ false }; // mouse was clicked but never released
         };
+        class Input : public Component {
+          public:
+            std::string value;
+            bool focused{ false };
+        };
     };
 
     struct Theme {
@@ -42,7 +47,7 @@ namespace LayoutEngine {
         Color get_color(const std::string& color_id);
         float get_radius();
 
-        // NOTE: I actually have no idea why unique_ptr is needed here, some guy just said to do it in a discord server and I did and it works, so why question it
+        // NOTE: I actually have no idea why unique_ptr is needed here, some guy in a discord server said to just do it and I did and it works, so why question it
         void add_element(const std::string& element_id, std::unique_ptr<component_context::Component> element);
         template <typename ComponentType>
         ComponentType* get_element(const std::string& element_id) {

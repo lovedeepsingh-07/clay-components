@@ -4,7 +4,7 @@
 #include <iostream>
 #include <raylib.h>
 
-namespace game_utils {
+namespace app_utils {
     constexpr float PPM = 32.0F;
     constexpr float MPP = (1.0F / PPM);
 
@@ -12,5 +12,7 @@ namespace game_utils {
     void println(Args&&... args) {
         (std::cout << ... << std::forward<Args>(args)) << '\n';
     }
-    Clay_Color raylib_to_clay(Color rayColor);
-} // namespace game_utils
+    Clay_Color raylib_to_clay(Color ray_color);
+    Color clay_to_raylib(Clay_Color clay_color);
+    bool is_color_set(Clay_Color color);
+} // namespace app_utils
