@@ -3,14 +3,6 @@
 #include <cctype>
 
 layout_components::_input_builder&
-layout_components::_input_builder::style(Clay_ElementDeclaration style) {
-    this->_custom_styled = true;
-    this->_style = style;
-    this->_style.id = this->_clay->hashID(this->_id);
-    return *this;
-}
-
-layout_components::_input_builder&
 layout_components::_input_builder::placeholder(const std::string& placeholder) {
     this->_placeholder = placeholder;
     return *this;
@@ -48,6 +40,10 @@ void layout_components::_input_builder::build() {
         if ((IsKeyPressed(KEY_BACKSPACE)) && !_value->empty()) {
             _value->pop_back();
         }
+        if (IsKeyPressed(KEY_BACKSPACE)
+            && (IsKeyDown(KEY_LEFT_CONTROL) || IsKeyDown(KEY_RIGHT_CONTROL))) {
+            _value->clear();
+        }
     }
 
     // default color values
@@ -76,15 +72,16 @@ void layout_components::_input_builder::build() {
         if (app_utils::is_color_set(_style.backgroundColor)) {
             input_style.backgroundColor = _style.backgroundColor;
         }
+        input_style.cornerRadius = _style.cornerRadius;
         if (app_utils::is_color_set(_style.border.color)) {
             input_style.border.color = _style.border.color;
         }
         input_style.border.width = _style.border.width;
-        input_style.cornerRadius = _style.cornerRadius;
     }
 
     _clay->openElement(input_style);
     {
+        // FIXME: there has to be a way to allow users to modify the style of placeholder text as well as input text
         if (_value->empty() && !ctx->focused) {
             _clay->textElement(
                 _placeholder,

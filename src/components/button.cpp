@@ -8,13 +8,6 @@ layout_components::_button_builder::variant(const std::string& variant) {
     return *this;
 }
 layout_components::_button_builder&
-layout_components::_button_builder::style(Clay_ElementDeclaration style) {
-    this->_custom_styled = true;
-    this->_style = style;
-    this->_style.id = this->_clay->hashID(this->_id);
-    return *this;
-}
-layout_components::_button_builder&
 layout_components::_button_builder::text(const std::string& text) {
     this->_text_button = true;
     this->_text = text;
@@ -80,10 +73,11 @@ bool layout_components::_button_builder::build() {
         if (app_utils::is_color_set(_style.backgroundColor)) {
             button_style.backgroundColor = _style.backgroundColor;
         }
+        button_style.cornerRadius = _style.cornerRadius;
         if (app_utils::is_color_set(_style.border.color)) {
             button_style.border.color = _style.border.color;
         }
-        button_style.cornerRadius = _style.cornerRadius;
+        button_style.border.width = _style.border.width;
     }
 
     _clay->openElement(button_style);

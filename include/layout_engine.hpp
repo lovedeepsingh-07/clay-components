@@ -19,8 +19,12 @@ namespace LayoutEngine {
         };
         class Input : public Component {
           public:
-            std::string value;
+            std::string value{ "" };
             bool focused{ false };
+        };
+        class Checkbox : public Component {
+          public:
+            bool checked{ false };
         };
     };
 
