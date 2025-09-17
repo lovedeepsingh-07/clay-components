@@ -26,6 +26,10 @@ namespace LayoutEngine {
           public:
             bool checked{ false };
         };
+        class Dropdown : public Component {
+          public:
+            bool open{ false };
+        };
     };
 
     struct Theme {

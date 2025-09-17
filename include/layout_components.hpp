@@ -71,4 +71,12 @@ namespace layout_components {
         void build();
     };
     _checkbox_builder checkbox();
+
+    // dropdown
+    class _dropdown_builder : public Builder<_dropdown_builder> {
+      private:
+      public:
+        void build();
+    };
+    _dropdown_builder dropdown();
 };
