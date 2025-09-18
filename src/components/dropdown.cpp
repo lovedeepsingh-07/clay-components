@@ -16,23 +16,23 @@ void layout_components::close_dropdown_root(ClayMan& clay) {
     clay.closeElement();
 };
 
-layout_components::_dropdown_container_builder&
-layout_components::_dropdown_container_builder::root_id(const std::string& root_id) {
+layout_components::_dropdown_content_builder&
+layout_components::_dropdown_content_builder::root_id(const std::string& root_id) {
     this->_root_id = root_id;
     return *this;
 }
-layout_components::_dropdown_container_builder&
-layout_components::_dropdown_container_builder::button_clicked(bool button_clicked) {
+layout_components::_dropdown_content_builder&
+layout_components::_dropdown_content_builder::button_clicked(bool button_clicked) {
     this->_button_clicked = button_clicked;
     return *this;
 }
-layout_components::_dropdown_container_builder&
-layout_components::_dropdown_container_builder::children(std::function<void()> children) {
+layout_components::_dropdown_content_builder&
+layout_components::_dropdown_content_builder::children(std::function<void()> children) {
     this->_children = children;
     return *this;
 }
-// dropdown container
-void layout_components::_dropdown_container_builder::build() {
+// dropdown content
+void layout_components::_dropdown_content_builder::build() {
     auto* ctx = _engine->get_element<LayoutEngine::component_context::Dropdown>(_root_id);
 
     std::string floating_container_id = _root_id + "_DROPDOWN_FLOATING_CONTAINER";
@@ -48,8 +48,8 @@ void layout_components::_dropdown_container_builder::build() {
         ctx->open = false;
     }
 
-    // default dropdown children container styles
-    auto dropdown_children_container_style = Clay_ElementDeclaration{
+    // default dropdown children content styles
+    auto dropdown_children_content_style = Clay_ElementDeclaration{
         .id = _clay->hashID(children_container_id),
         .layout = { .sizing = { .width = CLAY_SIZING_FIT(120), .height = CLAY_SIZING_FIT(37) },
                     .padding = { .left = 10, .right = 10, .top = 8, .bottom = 8 },
@@ -64,15 +64,15 @@ void layout_components::_dropdown_container_builder::build() {
     };
     // apply custom styles
     if (_custom_styled) {
-        dropdown_children_container_style.layout = _style.layout;
+        dropdown_children_content_style.layout = _style.layout;
         if (app_utils::is_color_set(_style.backgroundColor)) {
-            dropdown_children_container_style.backgroundColor = _style.backgroundColor;
+            dropdown_children_content_style.backgroundColor = _style.backgroundColor;
         }
-        dropdown_children_container_style.cornerRadius = _style.cornerRadius;
+        dropdown_children_content_style.cornerRadius = _style.cornerRadius;
         if (app_utils::is_color_set(_style.border.color)) {
-            dropdown_children_container_style.border.color = _style.border.color;
+            dropdown_children_content_style.border.color = _style.border.color;
         }
-        dropdown_children_container_style.border.width = _style.border.width;
+        dropdown_children_content_style.border.width = _style.border.width;
     }
 
     if (ctx->open) {
@@ -86,13 +86,13 @@ void layout_components::_dropdown_container_builder::build() {
             } });
         {
             // dropdown children container
-            _clay->openElement(dropdown_children_container_style);
+            _clay->openElement(dropdown_children_content_style);
             { _children(); }
             _clay->closeElement();
         }
         _clay->closeElement();
     }
 }
-layout_components::_dropdown_container_builder layout_components::dropdown_container() {
-    return _dropdown_container_builder{};
+layout_components::_dropdown_content_builder layout_components::dropdown_content() {
+    return _dropdown_content_builder{};
 };

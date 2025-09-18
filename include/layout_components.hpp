@@ -72,25 +72,32 @@ namespace layout_components {
     };
     _checkbox_builder checkbox();
 
-    // dropdown root
+    // dropdown root : base element in a dropdown component
     class _dropdown_root_builder : public Builder<_dropdown_root_builder> {
       public:
         void build();
     };
     _dropdown_root_builder dropdown_root();
     void close_dropdown_root(ClayMan& clay);
-    // dropdown container
-    class _dropdown_container_builder : public Builder<_dropdown_container_builder> {
+    // dropdown content : the element that contains the actual content of the dropdown
+    class _dropdown_content_builder : public Builder<_dropdown_content_builder> {
       private:
         std::string _root_id;
         bool _button_clicked{ false };
         std::function<void()> _children;
 
       public:
-        _dropdown_container_builder& root_id(const std::string& root_id);
-        _dropdown_container_builder& button_clicked(bool button_clicked);
-        _dropdown_container_builder& children(std::function<void()> children);
+        _dropdown_content_builder& root_id(const std::string& root_id);
+        _dropdown_content_builder& button_clicked(bool button_clicked);
+        _dropdown_content_builder& children(std::function<void()> children);
         void build();
     };
-    _dropdown_container_builder dropdown_container();
+    _dropdown_content_builder dropdown_content();
+
+    // tabs root : base element in a tabs component
+    class _tabs_root_builder : public Builder<_tabs_root_builder> {
+      public:
+        void build();
+    };
+    _tabs_root_builder tabs_root();
 }

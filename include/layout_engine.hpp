@@ -30,6 +30,10 @@ namespace LayoutEngine {
           public:
             bool open{ false };
         };
+        class Tabs : public Component {
+          public:
+            std::string curr_tab;
+        };
     };
 
     struct Theme {
