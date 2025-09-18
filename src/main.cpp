@@ -313,11 +313,64 @@ int main() {
                 } });
             {
                 // default dropdown
-                layout_components::dropdown()
+                layout_components::dropdown_root()
                     .clay_man(clay)
                     .engine(layout_engine)
                     .id("demo_dropdown_default")
                     .build();
+                {
+                    auto* default_dropdown_ctx =
+                        layout_engine.get_element<LayoutEngine::component_context::Dropdown>("demo_dropdown_default"
+                        );
+                    bool clicked =
+                        layout_components::button()
+                            .clay_man(clay)
+                            .engine(layout_engine)
+                            .id("demo_dropdown_default_DROPDOWN_BUTTON")
+                            .variant("primary")
+                            .text(
+                                (default_dropdown_ctx != nullptr
+                                 && default_dropdown_ctx->open)
+                                    ? "close"
+                                    : "open"
+                            )
+                            .build();
+                    layout_components::dropdown_container()
+                        .clay_man(clay)
+                        .engine(layout_engine)
+                        .root_id("demo_dropdown_default")
+                        .button_clicked(clicked)
+                        .children([&]() {
+                            clay.element(Clay_ElementDeclaration{}, [&]() {
+                                clay.textElement(
+                                    "Dropdown Children 1",
+                                    Clay_TextElementConfig{
+                                        .textColor = app_utils::raylib_to_clay(
+                                            layout_engine.get_color("card-"
+                                                                    "foreground")
+                                        ),
+                                        .fontId = 0,
+                                        .fontSize = 20,
+                                    }
+                                );
+                            });
+                            clay.element(Clay_ElementDeclaration{}, [&]() {
+                                clay.textElement(
+                                    "Dropdown Children 2",
+                                    Clay_TextElementConfig{
+                                        .textColor = app_utils::raylib_to_clay(
+                                            layout_engine.get_color("card-"
+                                                                    "foreground")
+                                        ),
+                                        .fontId = 0,
+                                        .fontSize = 20,
+                                    }
+                                );
+                            });
+                        })
+                        .build();
+                }
+                layout_components::close_dropdown_root(clay);
             }
             clay.closeElement();
         }

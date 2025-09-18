@@ -2,6 +2,7 @@
 
 #include "clayman.hpp"
 #include "layout_engine.hpp"
+#include <functional>
 #include <string>
 
 namespace layout_components {
@@ -66,17 +67,30 @@ namespace layout_components {
 
     // checkbox
     class _checkbox_builder : public Builder<_checkbox_builder> {
-      private:
       public:
         void build();
     };
     _checkbox_builder checkbox();
 
-    // dropdown
-    class _dropdown_builder : public Builder<_dropdown_builder> {
-      private:
+    // dropdown root
+    class _dropdown_root_builder : public Builder<_dropdown_root_builder> {
       public:
         void build();
     };
-    _dropdown_builder dropdown();
-};
+    _dropdown_root_builder dropdown_root();
+    void close_dropdown_root(ClayMan& clay);
+    // dropdown container
+    class _dropdown_container_builder : public Builder<_dropdown_container_builder> {
+      private:
+        std::string _root_id;
+        bool _button_clicked{ false };
+        std::function<void()> _children;
+
+      public:
+        _dropdown_container_builder& root_id(const std::string& root_id);
+        _dropdown_container_builder& button_clicked(bool button_clicked);
+        _dropdown_container_builder& children(std::function<void()> children);
+        void build();
+    };
+    _dropdown_container_builder dropdown_container();
+}
