@@ -9,12 +9,13 @@ default:
 	just -l
 
 build:
-	mkdir -p {{build_dir}}
-	cmake -S . -B {{build_dir}} -DCMAKE_TOOLCHAIN_FILE={{cmake_toolchain_file}} -DCMAKE_EXPORT_COMPILE_COMMANDS=ON -DCMAKE_BUILD_TYPE={{cmake_build_type}}
-	cmake --build ./{{build_dir}}
+	mkdir -p {{build_dir}}/windows
+	cmake -S . -B {{build_dir}}/windows -DCMAKE_TOOLCHAIN_FILE={{cmake_toolchain_file}} -DCMAKE_EXPORT_COMPILE_COMMANDS=ON -DCMAKE_BUILD_TYPE={{cmake_build_type}} -DCMAKE_SYSTEM_NAME=Windows
+	cmake --build ./{{build_dir}}/windows
+	cp {{build_dir}}/windows/compile_commands.json {{build_dir}}/compile_commands.json
 
 run: build
-	./{{build_dir}}/{{binary_name}}.exe
+	./{{build_dir}}/windows/{{binary_name}}.exe
 
 fmt:
     find {{src_dir}} {{include_dir}} -regex '.*\.\(cpp\|hpp\)' | xargs clang-format -i

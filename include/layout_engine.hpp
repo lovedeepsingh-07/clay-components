@@ -4,6 +4,7 @@
 #include <raylib.h>
 #include <string>
 #include <unordered_map>
+#include <vector>
 
 namespace LayoutEngine {
     namespace component_context {
@@ -32,6 +33,7 @@ namespace LayoutEngine {
         };
         class Tabs : public Component {
           public:
+            std::vector<std::string> tab_list;
             std::string curr_tab;
         };
     };

@@ -8,7 +8,7 @@ void demo::dropdown(ClayMan& clay, LayoutEngine::LayoutEngine& layout_engine) {
             .sizing = { CLAY_SIZING_GROW(0), CLAY_SIZING_GROW(0) },
             .padding = CLAY_PADDING_ALL(8),
             .childGap = 8,
-            .childAlignment = { .x = CLAY_ALIGN_X_LEFT, .y = CLAY_ALIGN_Y_CENTER },
+            .childAlignment = { .x = CLAY_ALIGN_X_LEFT, .y = CLAY_ALIGN_Y_TOP },
             .layoutDirection = CLAY_LEFT_TO_RIGHT,
         } });
     {

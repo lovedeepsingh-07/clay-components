@@ -4,6 +4,7 @@
 #include "layout_engine.hpp"
 #include <functional>
 #include <string>
+#include <vector>
 
 namespace layout_components {
     // builder for components
@@ -96,8 +97,31 @@ namespace layout_components {
 
     // tabs root : base element in a tabs component
     class _tabs_root_builder : public Builder<_tabs_root_builder> {
+        std::vector<std::string> _tab_list;
+
       public:
+        _tabs_root_builder& tab_list(std::vector<std::string> tab_list);
         void build();
     };
     _tabs_root_builder tabs_root();
+    void close_tabs_root(ClayMan& clay);
+    // tabs button list : header tab buttons
+    class _tabs_button_list_builder : public Builder<_tabs_button_list_builder> {
+        std::string _root_id;
+
+      public:
+        _tabs_button_list_builder& root_id(const std::string& root_id);
+        void build();
+    };
+    _tabs_button_list_builder tabs_button_list();
+    // tabs content : actual content
+    class _tabs_content_builder : public Builder<_tabs_content_builder> {
+        std::string _root_id;
+
+      public:
+        _tabs_content_builder& root_id(const std::string& root_id);
+        void build();
+    };
+    _tabs_content_builder tabs_content();
+    void close_tabs_content(ClayMan& clay);
 }

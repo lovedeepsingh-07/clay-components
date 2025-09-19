@@ -22,7 +22,7 @@ void LayoutEngine::LayoutEngine::setup() {
 			{ "input", { 55, 36, 40, 255 } }, 
 			{ "ring", { 67, 49, 53, 255 } }, 
 		}, 
-		.radius = 5.0F 
+		.radius = 6.0F 
 	});
     this->add_theme("dark", Theme{ .colors = {
 			{"background", {14, 11, 12, 255}},
@@ -45,7 +45,7 @@ void LayoutEngine::LayoutEngine::setup() {
 			{"input", {55, 36, 40, 255}},
 			{"ring", {67, 49, 53, 255}},
 		}, 
-		.radius = 5.0F 
+		.radius = 6.0F 
 	});
 }
 

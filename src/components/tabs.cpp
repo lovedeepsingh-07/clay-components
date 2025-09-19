@@ -1,119 +1,125 @@
 #include "layout_components.hpp"
 #include "utils.hpp"
 
+layout_components::_tabs_root_builder&
+layout_components::_tabs_root_builder::tab_list(std::vector<std::string> tab_list) {
+    this->_tab_list = tab_list;
+    return *this;
+};
 void layout_components::_tabs_root_builder::build() {
     auto tab_ctx = LayoutEngine::component_context::Tabs{};
-    tab_ctx.curr_tab = "home";
+    tab_ctx.tab_list = _tab_list;
+    tab_ctx.curr_tab = _tab_list[0];
+
     _engine->add_element(_id, std::make_unique<LayoutEngine::component_context::Tabs>(tab_ctx));
     auto* ctx = _engine->get_element<LayoutEngine::component_context::Tabs>(_id);
 
     // main container
     _clay->openElement(Clay_ElementDeclaration{
         .id = _clay->hashID(_id),
-        .layout = { .sizing = { .width = CLAY_SIZING_GROW(200, 1280),
-                                .height = CLAY_SIZING_GROW(100, 720) },
-                    .childAlignment = { .x = CLAY_ALIGN_X_CENTER, .y = CLAY_ALIGN_Y_CENTER },
+        .layout = { .sizing = { .width = CLAY_SIZING_GROW(0, 1280),
+                                .height = CLAY_SIZING_GROW(0, 720) },
+                    .padding = CLAY_PADDING_ALL(12),
+                    .childAlignment = { .x = CLAY_ALIGN_X_LEFT, .y = CLAY_ALIGN_Y_CENTER },
                     .layoutDirection = CLAY_TOP_TO_BOTTOM },
-        .backgroundColor = app_utils::raylib_to_clay(_engine->get_color("card")),
+        // .backgroundColor = app_utils::raylib_to_clay(_engine->get_color("card")),
+        .cornerRadius = CLAY_CORNER_RADIUS(_engine->get_radius()),
+        // .border = { .color =
+        //                 app_utils::raylib_to_clay(_engine->get_color("border")),
+        //             .width = { 1, 1, 1, 1, 0 } }
+    });
+}
+layout_components::_tabs_root_builder layout_components::tabs_root() {
+    return _tabs_root_builder{};
+};
+void layout_components::close_tabs_root(ClayMan& clay) {
+    clay.closeElement();
+}
+
+layout_components::_tabs_button_list_builder&
+layout_components::_tabs_button_list_builder::root_id(const std::string& root_id) {
+    this->_root_id = root_id;
+    return *this;
+}
+void layout_components::_tabs_button_list_builder::build() {
+    auto* ctx = _engine->get_element<LayoutEngine::component_context::Tabs>(_root_id);
+    if (ctx == nullptr) {
+        return;
+    }
+
+    _clay->openElement(Clay_ElementDeclaration{
+        .id = _clay->hashID(_root_id + "_TABS_BUTTON_LIST_CONTAINER"),
+        .layout = { .sizing = { .width = CLAY_SIZING_GROW(0, 500), .height = CLAY_SIZING_FIT() },
+                    .padding = CLAY_PADDING_ALL(6),
+                    // .childGap = 8,
+                    .childAlignment = { .x = CLAY_ALIGN_X_CENTER, .y = CLAY_ALIGN_Y_CENTER },
+                    .layoutDirection = CLAY_LEFT_TO_RIGHT },
         .cornerRadius = CLAY_CORNER_RADIUS(_engine->get_radius()),
         .border = { .color =
                         app_utils::raylib_to_clay(_engine->get_color("border")),
                     .width = { 1, 1, 1, 1, 0 } } });
     {
-        // tab button list
-        _clay->openElement(Clay_ElementDeclaration{
-            .id = _clay->hashID(_id + "_TABS_LIST_CONTAINER"),
-            .layout = { .sizing = { .width = CLAY_SIZING_GROW(), .height = CLAY_SIZING_FIT() },
-                        .padding = CLAY_PADDING_ALL(12),
-                        .childGap = 8,
-                        .childAlignment = { .x = CLAY_ALIGN_X_CENTER, .y = CLAY_ALIGN_Y_CENTER },
-                        .layoutDirection = CLAY_LEFT_TO_RIGHT },
-        });
-        {
-            std::string next_tab = ctx->curr_tab;
-            CLAY(Clay_ElementDeclaration{
-                .layout = { .sizing = { .width = CLAY_SIZING_GROW() } } }) {} // filler
+        std::string next_tab = ctx->curr_tab;
+        for (int i = 0; i < ctx->tab_list.size(); i++) {
             if (layout_components::button()
                     .clay_man(*_clay)
                     .engine(*_engine)
-                    .id(_id + "TAB_BUTTON_home")
-                    .variant("primary")
-                    .text("home")
+                    .id(_root_id + "TAB_BUTTON_" + ctx->tab_list[i])
+                    .style(Clay_ElementDeclaration{
+                        .layout = { .sizing = { .width = CLAY_SIZING_GROW(120),
+                                                .height = CLAY_SIZING_GROW(20) },
+                                    .padding = { .left = 8, .right = 8, .top = 4, .bottom = 4 },
+                                    .childAlignment = { .x = CLAY_ALIGN_X_CENTER, .y = CLAY_ALIGN_Y_CENTER },
+                                    .layoutDirection = CLAY_TOP_TO_BOTTOM },
+                        .backgroundColor = app_utils::raylib_to_clay(_engine->get_color(
+                            (ctx != nullptr && ctx->curr_tab == ctx->tab_list[i]) ? "primary" : "card"
+                        )),
+                        .cornerRadius = CLAY_CORNER_RADIUS(_engine->get_radius()),
+                    })
                     .build()) {
-                next_tab = "home";
+                next_tab = ctx->tab_list[i];
             }
-            CLAY(Clay_ElementDeclaration{
-                .layout = { .sizing = { .width = CLAY_SIZING_GROW() } } }) {} // filler
-            if (layout_components::button()
-                    .clay_man(*_clay)
-                    .engine(*_engine)
-                    .id(_id + "TAB_BUTTON_posts")
-                    .variant("primary")
-                    .text("posts")
-                    .build()) {
-                next_tab = "posts";
+            {
+                _clay->textElement(
+                    ctx->tab_list[i],
+                    Clay_TextElementConfig{
+                        .textColor = app_utils::raylib_to_clay(_engine->get_color(
+                            (ctx != nullptr && ctx->curr_tab == ctx->tab_list[i]) ? "primary-foreground" : "card-foreground"
+                        )),
+                        .fontId = 0,
+                        .fontSize = 24,
+                    }
+                );
             }
-            CLAY(Clay_ElementDeclaration{
-                .layout = { .sizing = { .width = CLAY_SIZING_GROW() } } }) {} // filler
-            if (layout_components::button()
-                    .clay_man(*_clay)
-                    .engine(*_engine)
-                    .id(_id + "TAB_BUTTON_about")
-                    .variant("primary")
-                    .text("about")
-                    .build()) {
-                next_tab = "about";
-            }
-            if (next_tab != ctx->curr_tab) {
-                ctx->curr_tab = next_tab;
-            }
-            CLAY(Clay_ElementDeclaration{
-                .layout = { .sizing = { .width = CLAY_SIZING_GROW() } } }) {} // filler
+            layout_components::close_button(*_clay);
         }
-        _clay->closeElement();
-        // tab content
-        _clay->openElement(Clay_ElementDeclaration{
-            .id = _clay->hashID(_id + "_TABS_CONTENT_CONTAINER"),
-            .layout = { .sizing = { .width = CLAY_SIZING_GROW(0), .height = CLAY_SIZING_GROW(0) },
-                        .childAlignment = { .x = CLAY_ALIGN_X_CENTER, .y = CLAY_ALIGN_Y_CENTER },
-                        .layoutDirection = CLAY_TOP_TO_BOTTOM },
-        });
-        {
-            if (ctx != nullptr && ctx->curr_tab == "home") {
-                _clay->textElement(
-                    "home",
-                    Clay_TextElementConfig{
-                        .textColor = app_utils::raylib_to_clay(_engine->get_color("card-foreground")),
-                        .fontId = 0,
-                        .fontSize = 24,
-                    }
-                );
-            }
-            if (ctx != nullptr && ctx->curr_tab == "posts") {
-                _clay->textElement(
-                    "posts",
-                    Clay_TextElementConfig{
-                        .textColor = app_utils::raylib_to_clay(_engine->get_color("card-foreground")),
-                        .fontId = 0,
-                        .fontSize = 24,
-                    }
-                );
-            }
-            if (ctx != nullptr && ctx->curr_tab == "about") {
-                _clay->textElement(
-                    "about",
-                    Clay_TextElementConfig{
-                        .textColor = app_utils::raylib_to_clay(_engine->get_color("card-foreground")),
-                        .fontId = 0,
-                        .fontSize = 24,
-                    }
-                );
-            }
+        if (next_tab != ctx->curr_tab) {
+            ctx->curr_tab = next_tab;
         }
-        _clay->closeElement();
     }
     _clay->closeElement();
 }
-layout_components::_tabs_root_builder layout_components::tabs_root() {
-    return _tabs_root_builder{};
+layout_components::_tabs_button_list_builder layout_components::tabs_button_list() {
+    return _tabs_button_list_builder{};
 };
+
+layout_components::_tabs_content_builder&
+layout_components::_tabs_content_builder::root_id(const std::string& root_id) {
+    this->_root_id = root_id;
+    return *this;
+}
+void layout_components::_tabs_content_builder::build() {
+    // tabs content
+    _clay->openElement(Clay_ElementDeclaration{
+        .id = _clay->hashID(_root_id + "_TABS_CONTENT_CONTAINER"),
+        .layout = { .sizing = { .width = CLAY_SIZING_GROW(0), .height = CLAY_SIZING_GROW(0) },
+                    .childAlignment = { .x = CLAY_ALIGN_X_LEFT, .y = CLAY_ALIGN_Y_TOP },
+                    .layoutDirection = CLAY_TOP_TO_BOTTOM },
+    });
+}
+layout_components::_tabs_content_builder layout_components::tabs_content() {
+    return _tabs_content_builder{};
+};
+void layout_components::close_tabs_content(ClayMan& clay) {
+    clay.closeElement();
+}
