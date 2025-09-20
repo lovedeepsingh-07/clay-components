@@ -33,7 +33,6 @@ namespace layout_components {
         BuilderType& style(Clay_ElementDeclaration style) {
             this->_custom_styled = true;
             this->_style = style;
-            this->_style.id = this->_clay->hashID(this->_id);
             return static_cast<BuilderType&>(*this);
         }
     };
