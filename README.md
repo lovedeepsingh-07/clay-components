@@ -3,9 +3,7 @@
 - [x] Button
 - [x] Input
 - [x] Checkbox
-- [ ] Dropdown
+- [x] Dropdown
 - [ ] Tooltip
 - [ ] Modal
-- [ ] Tabs
-- [ ] Menu Bar
-- [ ] Context Menu
+- [x] Tabs

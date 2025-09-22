@@ -56,7 +56,9 @@ int main() {
             // demo::input(clay, layout_engine);
             // demo::checkbox(clay, layout_engine);
             // demo::dropdown(clay, layout_engine);
-            demo::tabs(clay, layout_engine);
+            // demo::tabs(clay, layout_engine);
+            demo::tooltip(clay, layout_engine);
+            demo::modal(clay, layout_engine);
         }
         clay.closeElement();
 

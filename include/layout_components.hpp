@@ -123,4 +123,22 @@ namespace layout_components {
     };
     _tabs_content_builder tabs_content();
     void close_tabs_content(ClayMan& clay);
+
+    // tooltip
+    class _tooltip_builder : public Builder<_tooltip_builder> {
+        std::string _direction{ "right" };
+
+      public:
+        _tooltip_builder& direction(const std::string& direction);
+        void build();
+    };
+    _tooltip_builder tooltip();
+    void close_tooltip(ClayMan& clay);
+
+    // modal
+    class _modal_builder : public Builder<_modal_builder> {
+      public:
+        void build();
+    };
+    _modal_builder modal();
 }

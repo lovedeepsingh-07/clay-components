@@ -36,6 +36,11 @@ namespace LayoutEngine {
             std::vector<std::string> tab_list;
             std::string curr_tab;
         };
+        class Tooltip : public Component {};
+        class Modal : public Component {
+          public:
+            bool open{ false };
+        };
     };
 
     struct Theme {

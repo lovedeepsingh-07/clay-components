@@ -6,4 +6,6 @@ namespace demo {
     void checkbox(ClayMan& clay, LayoutEngine::LayoutEngine& layout_engine);
     void dropdown(ClayMan& clay, LayoutEngine::LayoutEngine& layout_engine);
     void tabs(ClayMan& clay, LayoutEngine::LayoutEngine& layout_engine);
+    void tooltip(ClayMan& clay, LayoutEngine::LayoutEngine& layout_engine);
+    void modal(ClayMan& clay, LayoutEngine::LayoutEngine& layout_engine);
 };
