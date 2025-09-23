@@ -96,6 +96,7 @@ namespace layout_components {
 
     // tabs root : base element in a tabs component
     class _tabs_root_builder : public Builder<_tabs_root_builder> {
+      private:
         std::vector<std::string> _tab_list;
 
       public:
@@ -106,6 +107,7 @@ namespace layout_components {
     void close_tabs_root(ClayMan& clay);
     // tabs button list : header tab buttons
     class _tabs_button_list_builder : public Builder<_tabs_button_list_builder> {
+      private:
         std::string _root_id;
 
       public:
@@ -115,6 +117,7 @@ namespace layout_components {
     _tabs_button_list_builder tabs_button_list();
     // tabs content : actual content
     class _tabs_content_builder : public Builder<_tabs_content_builder> {
+      private:
         std::string _root_id;
 
       public:
@@ -126,19 +129,34 @@ namespace layout_components {
 
     // tooltip
     class _tooltip_builder : public Builder<_tooltip_builder> {
+      private:
         std::string _direction{ "right" };
+        std::string _text;
 
       public:
         _tooltip_builder& direction(const std::string& direction);
+        _tooltip_builder& text(const std::string& text);
         void build();
     };
     _tooltip_builder tooltip();
     void close_tooltip(ClayMan& clay);
 
-    // modal
-    class _modal_builder : public Builder<_modal_builder> {
+    // modal root
+    class _modal_root_builder : public Builder<_modal_root_builder> {
       public:
         void build();
     };
-    _modal_builder modal();
+    _modal_root_builder modal_root();
+    void close_modal_root(ClayMan& clay);
+    // modal content
+    class _modal_content_builder : public Builder<_modal_content_builder> {
+      private:
+        std::string _root_id;
+
+      public:
+        _modal_content_builder& root_id(const std::string& root_id);
+        void build();
+    };
+    _modal_content_builder modal_content();
+    void close_modal_content(ClayMan& clay);
 }

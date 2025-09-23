@@ -11,7 +11,7 @@ int main() {
     SetTargetFPS(90);
 
     font_list[0] =
-        LoadFontEx("../deps/JetBrainsMonoNLNerdFontComplete-Regular.ttf", 48, nullptr, 300);
+        LoadFontEx("../deps/fonts/JetBrainsMonoNLNerdFontComplete-Regular.ttf", 48, nullptr, 300);
     SetTextureFilter(font_list[0].texture, TEXTURE_FILTER_BILINEAR);
 
     // layout engine setup
@@ -57,7 +57,7 @@ int main() {
             // demo::checkbox(clay, layout_engine);
             // demo::dropdown(clay, layout_engine);
             // demo::tabs(clay, layout_engine);
-            demo::tooltip(clay, layout_engine);
+            // demo::tooltip(clay, layout_engine);
             demo::modal(clay, layout_engine);
         }
         clay.closeElement();

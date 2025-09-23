@@ -15,7 +15,7 @@ build:
 	cp {{build_dir}}/windows/compile_commands.json {{build_dir}}/compile_commands.json
 
 run: build
-	./{{build_dir}}/windows/{{binary_name}}.exe
+	wine ./{{build_dir}}/windows/{{binary_name}}.exe
 
 fmt:
     find {{src_dir}} {{include_dir}} -regex '.*\.\(cpp\|hpp\)' | xargs clang-format -i
