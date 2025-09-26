@@ -1,12 +1,11 @@
 #pragma once
 
 #include "clay.h"
-#include <cstdint>
-#include <cstdio>
-#include <cstdlib>
-#include <cstring>
 #include <raylib.h>
 #include <raymath.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
 
 #define CLAY_RECTANGLE_TO_RAYLIB_RECTANGLE(rectangle)                          \
     (Rectangle) {                                                              \
@@ -19,25 +18,23 @@
         .b = (unsigned char)roundf(color.b), .a = (unsigned char)roundf(color.a)  \
     }
 
-const Camera Raylib_camera{};
+extern const Camera Raylib_camera;
 
-enum class CustomLayoutElementType : uint8_t {
-    CUSTOM_LAYOUT_ELEMENT_TYPE_3D_MODEL
-};
+typedef enum { CUSTOM_LAYOUT_ELEMENT_TYPE_3D_MODEL } CustomLayoutElementType;
 
-struct CustomLayoutElement_3DModel {
+typedef struct {
     Model model;
     float scale;
     Vector3 position;
     Matrix rotation;
-};
+} CustomLayoutElement_3DModel;
 
-struct CustomLayoutElement {
+typedef struct {
     CustomLayoutElementType type;
     union {
         CustomLayoutElement_3DModel model;
     } customData;
-};
+} CustomLayoutElement;
 
 // Get a ray trace from the screen position (i.e mouse) within a specific section of the screen
 Ray GetScreenToWorldPointWithZDistance(

@@ -1,5 +1,9 @@
 #include "utils.hpp"
 
+void app_utils::handle_clay_errors(Clay_ErrorData errorData) {
+    printf("%s\n", errorData.errorText.chars);
+};
+
 Clay_Color app_utils::raylib_to_clay(Color ray_color) {
     Clay_Color clay_color;
     clay_color.r = ray_color.r;

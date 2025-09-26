@@ -1,5 +1,7 @@
 #include <clay_raylib.hpp>
 
+const Camera Raylib_camera = {};
+
 Ray GetScreenToWorldPointWithZDistance(
     Vector2 position, Camera camera, int screenWidth, int screenHeight, float zDistance
 ) {
@@ -65,7 +67,7 @@ Raylib_MeasureText(Clay_StringSlice text, Clay_TextElementConfig* config, void* 
     Font fontToUse = fonts[config->fontId];
     // Font failed to load, likely the fonts are in the wrong place relative to the execution dir.
     // RayLib ships with a default font, so we can continue with that built in one.
-    if (fontToUse.glyphs == nullptr) {
+    if (!fontToUse.glyphs) {
         fontToUse = GetFontDefault();
     }
 
@@ -73,7 +75,7 @@ Raylib_MeasureText(Clay_StringSlice text, Clay_TextElementConfig* config, void* 
 
     for (int i = 0; i < text.length; ++i, lineCharCount++) {
         if (text.chars[i] == '\n') {
-            maxTextWidth = fmax(maxTextWidth, lineTextWidth);
+            maxTextWidth = fmaxf(maxTextWidth, lineTextWidth);
             maxLineCharCount = CLAY__MAX(maxLineCharCount, lineCharCount);
             lineTextWidth = 0;
             lineCharCount = 0;
@@ -88,7 +90,7 @@ Raylib_MeasureText(Clay_StringSlice text, Clay_TextElementConfig* config, void* 
         }
     }
 
-    maxTextWidth = fmax(maxTextWidth, lineTextWidth);
+    maxTextWidth = fmaxf(maxTextWidth, lineTextWidth);
     maxLineCharCount = CLAY__MAX(maxLineCharCount, lineCharCount);
 
     textSize.width =
@@ -105,7 +107,7 @@ void Clay_Raylib_Initialize(int width, int height, const char* title, unsigned i
 }
 
 void Clay_Raylib_Close() {
-    if (temp_render_buffer != nullptr) {
+    if (temp_render_buffer) {
         free(temp_render_buffer);
     }
     temp_render_buffer_len = 0;
@@ -130,7 +132,7 @@ void Clay_Raylib_Render(Clay_RenderCommandArray renderCommands, Font* fonts) {
 
             if (strlen > temp_render_buffer_len) {
                 // Grow the temp buffer if we need a larger string
-                if (temp_render_buffer != nullptr) {
+                if (temp_render_buffer) {
                     free(temp_render_buffer);
                 }
                 temp_render_buffer = (char*)malloc(strlen);
@@ -305,7 +307,7 @@ void Clay_Raylib_Render(Clay_RenderCommandArray renderCommands, Font* fonts) {
                     roundf(
                         config->cornerRadius.bottomRight - (float)config->width.bottom
                     ),
-                    config->cornerRadius.bottomRight, 0.1, 90, 10,
+                    config->cornerRadius.bottomRight, 0.1F, 90, 10,
                     CLAY_COLOR_TO_RAYLIB_COLOR(config->color)
                 );
             }
@@ -313,12 +315,12 @@ void Clay_Raylib_Render(Clay_RenderCommandArray renderCommands, Font* fonts) {
         }
         case CLAY_RENDER_COMMAND_TYPE_CUSTOM: {
             Clay_CustomRenderData* config = &renderCommand->renderData.custom;
-            auto* customElement = (CustomLayoutElement*)config->customData;
-            if (customElement == nullptr) {
+            CustomLayoutElement* customElement = (CustomLayoutElement*)config->customData;
+            if (!customElement) {
                 continue;
             }
             switch (customElement->type) {
-            case ::CustomLayoutElementType::CUSTOM_LAYOUT_ELEMENT_TYPE_3D_MODEL: {
+            case CUSTOM_LAYOUT_ELEMENT_TYPE_3D_MODEL: {
                 Clay_BoundingBox rootBox = renderCommands.internalArray[0].boundingBox;
                 float scaleValue = CLAY__MIN(
                     CLAY__MIN(1, 768 / rootBox.height) * CLAY__MAX(1, rootBox.width / 1024), 1.5F
@@ -328,8 +330,8 @@ void Clay_Raylib_Render(Clay_RenderCommandArray renderCommands, Font* fonts) {
                                    + (renderCommand->boundingBox.width / 2),
                                renderCommand->boundingBox.y
                                    + (renderCommand->boundingBox.height / 2) + 20 },
-                    Raylib_camera, (int)roundf(rootBox.width), 140,
-                    roundf(rootBox.height)
+                    Raylib_camera, (int)roundf(rootBox.width),
+                    (int)roundf(rootBox.height), 140
                 );
                 BeginMode3D(Raylib_camera);
                 DrawModel(
