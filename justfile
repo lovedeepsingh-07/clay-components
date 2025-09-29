@@ -1,21 +1,37 @@
-build_dir := "build"
-binary_name := "clay-components"
-src_dir := "src"
-include_dir := "include"
-cmake_toolchain_file := "mingw-w64-toolchain.cmake"
-cmake_build_type := "Debug"
+BUILD_DIR := "build"
+BINARY_NAME := "clay-components"
+PUBLIC_DIR := "public"
+CMAKE_TOOLCHAIN_FILE := "mingw-w64-toolchain.cmake"
+BUILD_TYPE := "Release"
+export EM_CACHE := env_var('HOME') + '/.cache/emscripten'
 
 default:
 	just -l
 
+init:
+	nix run .#setup
+
 build:
-	mkdir -p {{build_dir}}/windows
-	cmake -S . -B {{build_dir}}/windows -DCMAKE_TOOLCHAIN_FILE={{cmake_toolchain_file}} -DCMAKE_EXPORT_COMPILE_COMMANDS=ON -DCMAKE_BUILD_TYPE={{cmake_build_type}} -DCMAKE_SYSTEM_NAME=Windows
-	cmake --build ./{{build_dir}}/windows
-	cp {{build_dir}}/windows/compile_commands.json {{build_dir}}/compile_commands.json
+	mkdir -p {{BUILD_DIR}}/windows
+	cmake -S . -B {{BUILD_DIR}}/windows -DCMAKE_TOOLCHAIN_FILE={{CMAKE_TOOLCHAIN_FILE}} -DCMAKE_EXPORT_COMPILE_COMMANDS=ON -DBUILD_TYPE={{BUILD_TYPE}} -DCMAKE_SYSTEM_NAME=Windows
+	cmake --build ./{{BUILD_DIR}}/windows
+	cp {{BUILD_DIR}}/windows/compile_commands.json {{BUILD_DIR}}/compile_commands.json
 
 run: build
-	./{{build_dir}}/windows/{{binary_name}}.exe
+	{{BUILD_DIR}}/windows/{{BINARY_NAME}}.exe
+
+build-web:
+	mkdir -p {{BUILD_DIR}}/web
+	emcmake cmake -S . -B {{BUILD_DIR}}/web -DCMAKE_EXPORT_COMPILE_COMMANDS=ON -DBUILD_TYPE={{BUILD_TYPE}}
+	cmake --build ./{{BUILD_DIR}}/web
+	cp {{BUILD_DIR}}/web/compile_commands.json {{BUILD_DIR}}/compile_commands.json
+	mkdir -p {{BUILD_DIR}}/public
+	cp {{BUILD_DIR}}/web/{{BINARY_NAME}}.* {{BUILD_DIR}}/public/
+	cp {{PUBLIC_DIR}}/index.html {{BUILD_DIR}}/public/
+	cp {{PUBLIC_DIR}}/style.css {{BUILD_DIR}}/public/
+	cp {{PUBLIC_DIR}}/script.js {{BUILD_DIR}}/public/
+serve: build-web
+	live-server {{BUILD_DIR}}/public --port=3000
 
 fmt:
-    find {{src_dir}} {{include_dir}} -regex '.*\.\(cpp\|hpp\)' | xargs clang-format -i
+    find src include -regex '.*\.\(cpp\|hpp\)' | xargs clang-format -i

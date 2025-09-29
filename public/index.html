@@ -1,0 +1,22 @@
+<html>
+  <head>
+    <title>clay-components</title>
+    <link rel="stylesheet" href="style.css" />
+    <script src="script.js"></script>
+  </head>
+  <body>
+    <canvas id="canvas"></canvas>
+  </body>
+  <script type="module">
+    import initModule from "./clay-components.js";
+
+    const instance = await initModule({
+      canvas: document.getElementById("canvas"),
+      locateFile: (path) => {
+        if (path.endsWith(".wasm")) return "./clay-components.wasm";
+        if (path.endsWith(".data")) return "./clay-components.data";
+        return path;
+      },
+    });
+  </script>
+</html>

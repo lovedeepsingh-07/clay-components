@@ -5,7 +5,7 @@
 
 int main() {
     // window setup
-    Clay_Raylib_Initialize(1280, 720, "basement", FLAG_WINDOW_RESIZABLE);
+    Clay_Raylib_Initialize(1280, 720, "clay-components", FLAG_WINDOW_RESIZABLE);
 
     // clay setup
     uint64_t clay_required_memory = Clay_MinMemorySize();
@@ -21,7 +21,7 @@ int main() {
     // font setup
     Font font_list[1];
     font_list[0] =
-        LoadFontEx("../deps/fonts/JetBrainsMonoNLNerdFontComplete-Regular.ttf", 48, NULL, 400);
+        LoadFontEx("./assets/JetBrainsMonoNLNerdFontComplete-Regular.ttf", 48, NULL, 400);
     SetTextureFilter(font_list[0].texture, TEXTURE_FILTER_BILINEAR);
     Clay_SetMeasureTextFunction(Raylib_MeasureText, font_list);
 
@@ -47,13 +47,13 @@ int main() {
         // debug mode
         if ((IsKeyDown(KEY_LEFT_CONTROL) || IsKeyDown(KEY_RIGHT_CONTROL))
             && (IsKeyDown(KEY_LEFT_SHIFT) || IsKeyDown(KEY_RIGHT_SHIFT))
-            && IsKeyPressed(KEY_I)) {
+            && IsKeyPressed(KEY_K)) {
             Clay_SetDebugModeEnabled(!Clay_IsDebugModeEnabled());
         }
         // theme
         if ((IsKeyDown(KEY_LEFT_CONTROL) || IsKeyDown(KEY_RIGHT_CONTROL))
             && (IsKeyDown(KEY_LEFT_SHIFT) || IsKeyDown(KEY_RIGHT_SHIFT))
-            && IsKeyPressed(KEY_O)) {
+            && IsKeyPressed(KEY_L)) {
             if (layout_engine.get_curr_theme() == "dark") {
                 layout_engine.set_theme("light");
             } else {
@@ -62,14 +62,21 @@ int main() {
         }
 
         Clay_BeginLayout();
-        CLAY_TEXT(
-            CLAY_STRING("hello, world!"),
-            CLAY_TEXT_CONFIG({
-                .textColor = app_utils::raylib_to_clay(layout_engine.get_color("foreground")),
-                .fontId = 0,
-                .fontSize = 25,
-            })
-        );
+        CLAY(Clay_ElementDeclaration{
+            .id = CLAY_ID("container"),
+            .layout = { .sizing = { .width = CLAY_SIZING_GROW(0),
+                                    .height = CLAY_SIZING_GROW(0) } } }) {
+            CLAY(Clay_ElementDeclaration{
+                .layout = { .sizing = { .width = CLAY_SIZING_GROW(0) } } }) {}
+            CLAY_TEXT(
+                CLAY_STRING("hello, world!"),
+                CLAY_TEXT_CONFIG({
+                    .textColor = app_utils::raylib_to_clay(layout_engine.get_color("foreground")),
+                    .fontId = 0,
+                    .fontSize = 25,
+                })
+            );
+        }
         Clay_RenderCommandArray renderCommands = Clay_EndLayout();
 
         BeginDrawing();
