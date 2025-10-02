@@ -1,6 +1,8 @@
 #define CLAY_IMPLEMENTATION
+#include "layout_components.hpp"
 #include "layout_engine.hpp"
 #include "utils.hpp"
+#include <array>
 #include <clay_raylib.hpp>
 
 int main() {
@@ -19,11 +21,11 @@ int main() {
     );
 
     // font setup
-    Font font_list[1];
+    std::array<Font, 1> font_list;
     font_list[0] =
         LoadFontEx("./assets/JetBrainsMonoNLNerdFontComplete-Regular.ttf", 48, NULL, 400);
     SetTextureFilter(font_list[0].texture, TEXTURE_FILTER_BILINEAR);
-    Clay_SetMeasureTextFunction(Raylib_MeasureText, font_list);
+    Clay_SetMeasureTextFunction(Raylib_MeasureText, font_list.data());
 
     // layout engine
     LayoutEngine::LayoutEngine layout_engine{};
@@ -31,6 +33,8 @@ int main() {
     layout_engine.set_theme("dark");
 
     while (!WindowShouldClose()) {
+        // clear the frame memory arena at the starting of every frame
+        layout_engine.frame_arena.clear();
         // window state
         Vector2 mouse_pos = GetMousePosition();
         Vector2 scroll_delta = GetMouseWheelMoveV();
@@ -66,22 +70,15 @@ int main() {
             .id = CLAY_ID("container"),
             .layout = { .sizing = { .width = CLAY_SIZING_GROW(0),
                                     .height = CLAY_SIZING_GROW(0) } } }) {
-            CLAY(Clay_ElementDeclaration{
-                .layout = { .sizing = { .width = CLAY_SIZING_GROW(0) } } }) {}
-            CLAY_TEXT(
-                CLAY_STRING("hello, world!"),
-                CLAY_TEXT_CONFIG({
-                    .textColor = app_utils::raylib_to_clay(layout_engine.get_color("foreground")),
-                    .fontId = 0,
-                    .fontSize = 25,
-                })
-            );
+            if (layout_components::button("primary_button", layout_engine)) {
+                printf("button clicked!\n");
+            }
         }
         Clay_RenderCommandArray renderCommands = Clay_EndLayout();
 
         BeginDrawing();
         ClearBackground(layout_engine.get_color("background"));
-        Clay_Raylib_Render(renderCommands, font_list);
+        Clay_Raylib_Render(renderCommands, font_list.data());
         EndDrawing();
     }
     return 0;

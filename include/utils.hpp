@@ -1,7 +1,6 @@
 #pragma once
 
 #include "clay.h"
-#include <iostream>
 #include <raylib.h>
 
 namespace app_utils {

@@ -1,5 +1,6 @@
 #pragma once
 
+#include "memory_arena.hpp"
 #include <memory>
 #include <raylib.h>
 #include <string>
@@ -20,7 +21,7 @@ namespace LayoutEngine {
         };
         class Input : public Component {
           public:
-            std::string value{ "" };
+            std::string value;
             bool focused{ false };
         };
         class Checkbox : public Component {
@@ -55,8 +56,13 @@ namespace LayoutEngine {
         std::string m_curr_theme_id;
 
       public:
+        MemoryArena::MemoryArena frame_arena{ MemoryArena::MemoryArena(1024) };
         LayoutEngine() = default;
         ~LayoutEngine() = default;
+
+        // disable copying
+        LayoutEngine(const LayoutEngine&) = delete;
+        LayoutEngine& operator=(const LayoutEngine&) = delete;
 
         void setup();
 

@@ -8,7 +8,7 @@ export EM_CACHE := env_var('HOME') + '/.cache/emscripten'
 default:
 	just -l
 
-init:
+setup:
 	nix run .#setup
 
 build:

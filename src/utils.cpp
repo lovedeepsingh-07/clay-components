@@ -1,4 +1,5 @@
 #include "utils.hpp"
+#include <cstdio>
 
 void app_utils::handle_clay_errors(Clay_ErrorData errorData) {
     printf("%s\n", errorData.errorText.chars);
