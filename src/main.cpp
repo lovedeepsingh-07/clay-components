@@ -68,11 +68,16 @@ int main() {
         Clay_BeginLayout();
         CLAY(Clay_ElementDeclaration{
             .id = CLAY_ID("container"),
-            .layout = { .sizing = { .width = CLAY_SIZING_GROW(0),
-                                    .height = CLAY_SIZING_GROW(0) } } }) {
-            if (layout_components::button("primary_button", layout_engine)) {
+            .layout = { .sizing = { .width = CLAY_SIZING_GROW(0), .height = CLAY_SIZING_GROW(0) },
+                        .childGap = 16
+
+            } }) {
+            if (layout_components::button("button", layout_engine)) {
                 printf("button clicked!\n");
             }
+            layout_components::checkbox("checkbox", layout_engine);
+            layout_components::input("input", layout_engine);
+            layout_components::tooltip("tooltip", layout_engine);
         }
         Clay_RenderCommandArray renderCommands = Clay_EndLayout();
 

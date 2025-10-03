@@ -34,7 +34,7 @@ bool layout_components::button(const std::string& id, LayoutEngine::LayoutEngine
 
     // color values
     Color button_background_color =
-        ColorAlpha(layout_engine.get_color("primary"), (float)((ctx->hovered || ctx->pressed) ? 0.85 : 1));
+        Fade(layout_engine.get_color("primary"), (float)((ctx->hovered || ctx->pressed) ? 0.85 : 1));
     Color button_foreground_color = layout_engine.get_color("primary-foreground");
     Color button_border_color =
         ColorAlpha(layout_engine.get_color("border"), (float)((ctx->hovered || ctx->pressed) ? 0.85 : 1));

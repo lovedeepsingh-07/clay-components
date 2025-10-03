@@ -16,17 +16,18 @@ namespace LayoutEngine {
         class Button : public Component {
           public:
             bool hovered{ false }; // mouse is hovering over the button
-            bool muted{ false }; // button is muted
             bool pressed{ false }; // mouse was clicked but never released
+        };
+        class Checkbox : public Component {
+          public:
+            bool hovered{ false };
+            bool pressed{ false };
+            bool checked{ false };
         };
         class Input : public Component {
           public:
             std::string value;
             bool focused{ false };
-        };
-        class Checkbox : public Component {
-          public:
-            bool checked{ false };
         };
         class Dropdown : public Component {
           public:
@@ -37,7 +38,10 @@ namespace LayoutEngine {
             std::vector<std::string> tab_list;
             std::string curr_tab;
         };
-        class Tooltip : public Component {};
+        class Tooltip : public Component {
+          public:
+            bool open{ false };
+        };
         class Modal : public Component {
           public:
             bool open{ false };
