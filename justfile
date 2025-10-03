@@ -17,6 +17,8 @@ build:
 	cmake --build ./{{BUILD_DIR}}/windows
 	cp {{BUILD_DIR}}/windows/compile_commands.json {{BUILD_DIR}}/compile_commands.json
 
+runw: build
+	wine {{BUILD_DIR}}/windows/{{BINARY_NAME}}.exe
 run: build
 	{{BUILD_DIR}}/windows/{{BINARY_NAME}}.exe
 

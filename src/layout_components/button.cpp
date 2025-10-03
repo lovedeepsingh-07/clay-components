@@ -50,7 +50,7 @@ bool layout_components::button(const std::string& id, LayoutEngine::LayoutEngine
         .border = { .color = app_utils::raylib_to_clay(button_border_color),
                     .width = { 1, 1, 1, 1, 0 } } }) {
         CLAY_TEXT(
-            CLAY_STRING("button"),
+            id_cs,
             CLAY_TEXT_CONFIG(Clay_TextElementConfig{
                 .textColor = app_utils::raylib_to_clay(button_foreground_color),
                 .fontId = 0,

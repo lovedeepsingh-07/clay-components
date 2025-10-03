@@ -5,4 +5,6 @@ namespace layout_components {
     void checkbox(const std::string& id, LayoutEngine::LayoutEngine& layout_engine);
     void input(const std::string& id, LayoutEngine::LayoutEngine& layout_engine);
     void tooltip(const std::string& id, LayoutEngine::LayoutEngine& layout_engine);
+    void dropdown(const std::string& id, LayoutEngine::LayoutEngine& layout_engine);
+    void modal(const std::string& id, LayoutEngine::LayoutEngine& layout_engine);
 };

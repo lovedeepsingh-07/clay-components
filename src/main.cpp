@@ -78,6 +78,8 @@ int main() {
             layout_components::checkbox("checkbox", layout_engine);
             layout_components::input("input", layout_engine);
             layout_components::tooltip("tooltip", layout_engine);
+            layout_components::dropdown("dropdown", layout_engine);
+            layout_components::modal("modal", layout_engine);
         }
         Clay_RenderCommandArray renderCommands = Clay_EndLayout();
 

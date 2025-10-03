@@ -45,19 +45,21 @@ void layout_components::tooltip(const std::string& id, LayoutEngine::LayoutEngin
         .layout = { .sizing = { .width = CLAY_SIZING_FIT(0), .height = CLAY_SIZING_FIT(0) },
                     .childAlignment = { .x = CLAY_ALIGN_X_CENTER, .y = CLAY_ALIGN_Y_CENTER } },
     }) {
-        // actual tooltip content
+        // acutal content
         if (layout_components::button("tooltip_button", layout_engine)) {
             printf("tooltip button clicked!\n");
         }
         if (hovering) {
+            // floating container
             CLAY(Clay_ElementDeclaration{
                 .id = CLAY_ID_LOCAL("FLOATING_CONTAINER"),
                 .floating = { .offset = floating_offset,
                               .attachPoints = { .element = element_attach_point, .parent = parent_attach_point },
                               .pointerCaptureMode = CLAY_POINTER_CAPTURE_MODE_PASSTHROUGH,
                               .attachTo = CLAY_ATTACH_TO_PARENT } }) {
+                // content container
                 CLAY(Clay_ElementDeclaration{
-                    .id = CLAY_ID_LOCAL("TOOLTIP_CONTAINER"),
+                    .id = CLAY_ID_LOCAL("CONTENT_CONTAINER"),
                     .layout = { .sizing = { .width = CLAY_SIZING_FIT(120),
                                             .height = CLAY_SIZING_FIT(37) },
                                 .padding = { .left = 8, .right = 8, .top = 6, .bottom = 6 },
@@ -68,6 +70,7 @@ void layout_components::tooltip(const std::string& id, LayoutEngine::LayoutEngin
                     .border = { .color = app_utils::raylib_to_clay(tooltip_border_color),
                                 .width = { 1, 1, 1, 1, 0 } },
                 }) {
+                    // tooltip content
                     CLAY_TEXT(
                         CLAY_STRING("tooltip"),
                         CLAY_TEXT_CONFIG(Clay_TextElementConfig{
