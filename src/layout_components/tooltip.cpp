@@ -1,3 +1,4 @@
+#include "js.hpp"
 #include "layout_components.hpp"
 #include "utils.hpp"
 #include <clay.h>
@@ -47,7 +48,11 @@ void layout_components::tooltip(const std::string& id, LayoutEngine::LayoutEngin
     }) {
         // acutal content
         if (layout_components::button("tooltip_button", layout_engine)) {
-            printf("tooltip button clicked!\n");
+#ifdef __EMSCRIPTEN__
+            js::alert("tooltip button clicked!");
+#else
+            printf("tooltip button clicked!");
+#endif
         }
         if (hovering) {
             // floating container

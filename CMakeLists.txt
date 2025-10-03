@@ -36,6 +36,7 @@ if (CMAKE_SYSTEM_NAME STREQUAL "Emscripten")
 		"-sALLOW_MEMORY_GROWTH=1"
 		"-sSTACK_SIZE=1mb"
 		"--preload-file=${CMAKE_SOURCE_DIR}/assets@/assets"
+		"--js-library=${CMAKE_SOURCE_DIR}/data/script.js"
     )
 endif()
 

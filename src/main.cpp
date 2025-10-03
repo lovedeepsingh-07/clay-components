@@ -1,4 +1,5 @@
 #define CLAY_IMPLEMENTATION
+#include "js.hpp"
 #include "layout_components.hpp"
 #include "layout_engine.hpp"
 #include "utils.hpp"
@@ -73,7 +74,11 @@ int main() {
 
             } }) {
             if (layout_components::button("button", layout_engine)) {
-                printf("button clicked!\n");
+#ifdef __EMSCRIPTEN__
+                js::alert("button clicked!");
+#else
+                printf("button clicked!");
+#endif
             }
             layout_components::checkbox("checkbox", layout_engine);
             layout_components::input("input", layout_engine);
