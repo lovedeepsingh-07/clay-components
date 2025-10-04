@@ -1,13 +1,8 @@
 #include "layout_components.hpp"
 #include "utils.hpp"
-#include <clay.h>
-#include <cstring>
 
 void layout_components::input(const std::string& id, LayoutEngine::LayoutEngine& layout_engine) {
-    auto id_cs = Clay_String{
-        .length = (std::int32_t)id.size(),
-        .chars = layout_engine.frame_arena.alloc_string(id),
-    };
+    Clay_String id_cs = layout_engine.frame_arena.alloc_clay_string(id);
     Clay_ElementId input_id = CLAY_SID(id_cs);
 
     layout_engine.add_element(id, std::make_unique<LayoutEngine::component_context::Input>());
@@ -39,10 +34,7 @@ void layout_components::input(const std::string& id, LayoutEngine::LayoutEngine&
             ctx->value.clear();
         }
     }
-    auto input_value_cs = Clay_String{
-        .length = (std::int32_t)ctx->value.size(),
-        .chars = layout_engine.frame_arena.alloc_string(ctx->value),
-    };
+    Clay_String input_value_cs = layout_engine.frame_arena.alloc_clay_string(ctx->value);
 
     // color values
     Color input_background_color =

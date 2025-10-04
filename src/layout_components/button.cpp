@@ -1,13 +1,8 @@
 #include "layout_components.hpp"
 #include "utils.hpp"
-#include <clay.h>
-#include <cstring>
 
-bool layout_components::button(const std::string& id, LayoutEngine::LayoutEngine& layout_engine) {
-    auto id_cs = Clay_String{
-        .length = (std::int32_t)id.size(),
-        .chars = layout_engine.frame_arena.alloc_string(id),
-    };
+bool layout_components::button(const std::string& id, const std::string& text, LayoutEngine::LayoutEngine& layout_engine) {
+    Clay_String id_cs = layout_engine.frame_arena.alloc_clay_string(id);
     Clay_ElementId button_id = CLAY_SID(id_cs);
 
     layout_engine.add_element(id, std::make_unique<LayoutEngine::component_context::Button>());
@@ -49,8 +44,9 @@ bool layout_components::button(const std::string& id, LayoutEngine::LayoutEngine
         .cornerRadius = CLAY_CORNER_RADIUS(layout_engine.get_radius()),
         .border = { .color = app_utils::raylib_to_clay(button_border_color),
                     .width = { 1, 1, 1, 1, 0 } } }) {
+        Clay_String button_text_cs = layout_engine.frame_arena.alloc_clay_string(text);
         CLAY_TEXT(
-            id_cs,
+            button_text_cs,
             CLAY_TEXT_CONFIG(Clay_TextElementConfig{
                 .textColor = app_utils::raylib_to_clay(button_foreground_color),
                 .fontId = 0,

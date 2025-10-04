@@ -1,3 +1,4 @@
+#include <clay.h>
 #include <cstddef>
 #include <cstdint>
 #include <cstdio>
@@ -46,6 +47,11 @@ namespace MemoryArena {
             char* allocated_string = (char*)this->alloc(len);
             memcpy(allocated_string, input_string.data(), len);
             return allocated_string;
+        }
+        Clay_String alloc_clay_string(const std::string& input_string) {
+            auto cs = Clay_String{ .length = (std::int32_t)input_string.size(),
+                                   .chars = this->alloc_string(input_string) };
+            return cs;
         }
         void clear() {
             this->m_offset = 0;

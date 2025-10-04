@@ -1,25 +1,16 @@
 #include "layout_components.hpp"
 #include "utils.hpp"
-#include <clay.h>
-#include <cstring>
 
 void layout_components::modal(const std::string& id, LayoutEngine::LayoutEngine& layout_engine) {
-    auto id_cs = Clay_String{
-        .length = (std::int32_t)id.size(),
-        .chars = layout_engine.frame_arena.alloc_string(id),
-    };
+    Clay_String id_cs = layout_engine.frame_arena.alloc_clay_string(id);
     Clay_ElementId modal_id = CLAY_SID(id_cs);
-    std::string floating_container_id_str = id + "_FLOATING_CONTAINER";
-    auto floating_container_id_cs = Clay_String{
-        .length = (std::int32_t)floating_container_id_str.size(),
-        .chars = layout_engine.frame_arena.alloc_string(floating_container_id_str),
-    };
+
+    Clay_String floating_container_id_cs =
+        layout_engine.frame_arena.alloc_clay_string(id + "_FLOATING_CONTAINER");
     Clay_ElementId floating_container_id = CLAY_SID(floating_container_id_cs);
-    std::string content_container_id_str = id + "_CONTENT_CONTAINER";
-    auto content_container_id_cs = Clay_String{
-        .length = (std::int32_t)content_container_id_str.size(),
-        .chars = layout_engine.frame_arena.alloc_string(content_container_id_str),
-    };
+
+    Clay_String content_container_id_cs =
+        layout_engine.frame_arena.alloc_clay_string(id + "_CONTENT_CONTAINER");
     Clay_ElementId content_container_id = CLAY_SID(content_container_id_cs);
 
     layout_engine.add_element(id, std::make_unique<LayoutEngine::component_context::Modal>());
@@ -35,7 +26,7 @@ void layout_components::modal(const std::string& id, LayoutEngine::LayoutEngine&
     }
 
     // modal button
-    if (layout_components::button(id + "_button", layout_engine)) {
+    if (layout_components::button(id + "_button", "modal_button", layout_engine)) {
         ctx->open = true;
     }
 

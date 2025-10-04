@@ -1,34 +1,32 @@
 #include "layout_components.hpp"
 #include "utils.hpp"
-#include <clay.h>
-#include <cstring>
 
 void layout_components::dropdown(const std::string& id, LayoutEngine::LayoutEngine& layout_engine) {
-    auto id_cs = Clay_String{
-        .length = (std::int32_t)id.size(),
-        .chars = layout_engine.frame_arena.alloc_string(id),
-    };
+    Clay_String id_cs = layout_engine.frame_arena.alloc_clay_string(id);
     Clay_ElementId dropdown_id = CLAY_SID(id_cs);
-    std::string floating_container_id_str = id + "_FLOATING_CONTAINER";
-    auto floating_container_id_cs = Clay_String{
-        .length = (std::int32_t)floating_container_id_str.size(),
-        .chars = layout_engine.frame_arena.alloc_string(floating_container_id_str),
-    };
+
+    Clay_String floating_container_id_cs =
+        layout_engine.frame_arena.alloc_clay_string(id + "_FLOATING_CONTAINER");
     Clay_ElementId floating_container_id = CLAY_SID(floating_container_id_cs);
+
+    Clay_String dropdown_button_id_cs =
+        layout_engine.frame_arena.alloc_clay_string(id + "_DROPDOWN_BUTTON");
+    Clay_ElementId dropdown_button_id = CLAY_SID(dropdown_button_id_cs);
 
     layout_engine.add_element(id, std::make_unique<LayoutEngine::component_context::Dropdown>());
     auto* ctx = layout_engine.get_element<LayoutEngine::component_context::Dropdown>(id);
 
     // dropdown state configuration
     bool hovering_floating_container = Clay_PointerOver(floating_container_id);
+    bool hovering_dropdown_button = Clay_PointerOver(dropdown_button_id);
     if ((IsMouseButtonPressed(MOUSE_BUTTON_LEFT) || IsMouseButtonPressed(MOUSE_BUTTON_RIGHT))
-        && !hovering_floating_container) {
+        && !hovering_floating_container && !hovering_dropdown_button) {
         ctx->open = false;
     }
 
     CLAY(Clay_ElementDeclaration{ .id = dropdown_id }) {
         // dropdown button
-        if (layout_components::button("dropdown_button", layout_engine)) {
+        if (layout_components::button(id + "_DROPDOWN_BUTTON", "dropdown_button", layout_engine)) {
             ctx->open = !ctx->open;
         };
         if (ctx->open) {

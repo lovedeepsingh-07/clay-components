@@ -1,13 +1,8 @@
 #include "layout_components.hpp"
 #include "utils.hpp"
-#include <clay.h>
-#include <cstring>
 
 void layout_components::checkbox(const std::string& id, LayoutEngine::LayoutEngine& layout_engine) {
-    auto id_cs = Clay_String{
-        .length = (std::int32_t)id.size(),
-        .chars = layout_engine.frame_arena.alloc_string(id),
-    };
+    Clay_String id_cs = layout_engine.frame_arena.alloc_clay_string(id);
     Clay_ElementId checkbox_id = CLAY_SID(id_cs);
 
     layout_engine.add_element(id, std::make_unique<LayoutEngine::component_context::Checkbox>());

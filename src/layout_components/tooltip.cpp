@@ -1,14 +1,9 @@
 #include "js.hpp"
 #include "layout_components.hpp"
 #include "utils.hpp"
-#include <clay.h>
-#include <cstring>
 
 void layout_components::tooltip(const std::string& id, LayoutEngine::LayoutEngine& layout_engine) {
-    auto id_cs = Clay_String{
-        .length = (std::int32_t)id.size(),
-        .chars = layout_engine.frame_arena.alloc_string(id),
-    };
+    Clay_String id_cs = layout_engine.frame_arena.alloc_clay_string(id);
     Clay_ElementId tooltip_id = CLAY_SID(id_cs);
 
     layout_engine.add_element(id, std::make_unique<LayoutEngine::component_context::Tooltip>());
@@ -47,7 +42,7 @@ void layout_components::tooltip(const std::string& id, LayoutEngine::LayoutEngin
                     .childAlignment = { .x = CLAY_ALIGN_X_CENTER, .y = CLAY_ALIGN_Y_CENTER } },
     }) {
         // acutal content
-        if (layout_components::button("tooltip_button", layout_engine)) {
+        if (layout_components::button("tooltip_button", "tooltip_button", layout_engine)) {
 #ifdef __EMSCRIPTEN__
             js::alert("tooltip button clicked!");
 #else
