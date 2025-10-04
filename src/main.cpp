@@ -67,24 +67,51 @@ int main() {
         }
 
         Clay_BeginLayout();
+        // ------ main container ------
         CLAY(Clay_ElementDeclaration{
-            .id = CLAY_ID("container"),
+            .id = CLAY_ID("main_container"),
             .layout = { .sizing = { .width = CLAY_SIZING_GROW(0), .height = CLAY_SIZING_GROW(0) },
-                        .childGap = 16
+                        .childGap = 16,
+                        .layoutDirection = CLAY_TOP_TO_BOTTOM
 
             } }) {
-            if (layout_components::button("button", layout_engine)) {
+            // ------ header container ------
+            CLAY(Clay_ElementDeclaration{
+                .id = CLAY_ID("header_container"),
+                .layout = { .sizing = { .width = CLAY_SIZING_GROW(0), .height = CLAY_SIZING_FIT(0) },
+                            .padding = CLAY_PADDING_ALL(8),
+                            .childAlignment = { .x = CLAY_ALIGN_X_RIGHT,
+                                                .y = CLAY_ALIGN_Y_CENTER } } }) {
+                if (layout_components::button("github", layout_engine)) {
 #ifdef __EMSCRIPTEN__
-                js::alert("button clicked!");
+                    js::open_link("https://github.com/lovedeepsingh-07/"
+                                  "clay-components");
 #else
-                printf("button clicked!");
+                    printf("github button clicked!\n");
 #endif
+                }
             }
-            layout_components::checkbox("checkbox", layout_engine);
-            layout_components::input("input", layout_engine);
-            layout_components::tooltip("tooltip", layout_engine);
-            layout_components::dropdown("dropdown", layout_engine);
-            layout_components::modal("modal", layout_engine);
+            // ------ content container ------
+            CLAY(Clay_ElementDeclaration{
+                .id = CLAY_ID("content_container"),
+                .layout = { .sizing = { .width = CLAY_SIZING_GROW(0), .height = CLAY_SIZING_GROW(0) },
+                            .childGap = 16
+
+                } }) {
+                if (layout_components::button("button", layout_engine)) {
+#ifdef __EMSCRIPTEN__
+                    js::alert("button clicked!");
+#else
+                    printf("button clicked!\n");
+#endif
+                }
+                layout_components::checkbox("checkbox", layout_engine);
+                layout_components::input("input", layout_engine);
+                layout_components::tooltip("tooltip", layout_engine);
+                layout_components::dropdown("dropdown", layout_engine);
+                layout_components::modal("modal", layout_engine);
+                layout_components::tabs("tabs", layout_engine);
+            }
         }
         Clay_RenderCommandArray renderCommands = Clay_EndLayout();
 

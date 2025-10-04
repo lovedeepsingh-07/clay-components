@@ -51,7 +51,7 @@ void layout_components::tooltip(const std::string& id, LayoutEngine::LayoutEngin
 #ifdef __EMSCRIPTEN__
             js::alert("tooltip button clicked!");
 #else
-            printf("tooltip button clicked!");
+            printf("tooltip button clicked!\n");
 #endif
         }
         if (hovering) {

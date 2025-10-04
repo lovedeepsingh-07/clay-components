@@ -7,4 +7,5 @@ namespace layout_components {
     void tooltip(const std::string& id, LayoutEngine::LayoutEngine& layout_engine);
     void dropdown(const std::string& id, LayoutEngine::LayoutEngine& layout_engine);
     void modal(const std::string& id, LayoutEngine::LayoutEngine& layout_engine);
+    void tabs(const std::string& id, LayoutEngine::LayoutEngine& layout_engine);
 };
