@@ -43,6 +43,7 @@ namespace LayoutEngine {
           public:
             bool open{ false };
         };
+        class CodeBlock : public Component {};
     };
 
     struct Theme {

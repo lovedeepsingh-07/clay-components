@@ -11,4 +11,7 @@ mergeInto(LibraryManager.library, {
   open_link: function (ptr) {
     window.open(UTF8ToString(ptr), "_blank");
   },
+  copy_to_clipboard: function (ptr) {
+    navigator.clipboard.writeText(UTF8ToString(ptr));
+  },
 });

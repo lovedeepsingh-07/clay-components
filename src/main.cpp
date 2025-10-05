@@ -7,6 +7,7 @@
 #include <clay_raylib.hpp>
 
 int main() {
+    SetTraceLogLevel(LOG_NONE);
     // window setup
     Clay_Raylib_Initialize(1280, 720, "clay-components", FLAG_WINDOW_RESIZABLE);
 

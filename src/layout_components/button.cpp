@@ -50,7 +50,7 @@ bool layout_components::button(const std::string& id, const std::string& text, L
             CLAY_TEXT_CONFIG(Clay_TextElementConfig{
                 .textColor = app_utils::raylib_to_clay(button_foreground_color),
                 .fontId = 0,
-                .fontSize = 25,
+                .fontSize = 24,
             })
         );
     };
