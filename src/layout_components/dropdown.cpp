@@ -34,6 +34,7 @@ void layout_components::dropdown(const std::string& id, LayoutEngine::LayoutEngi
             CLAY(Clay_ElementDeclaration{
                 .id = floating_container_id,
                 .floating = { .offset = { 0, 6 },
+                              .zIndex = 80,
                               .attachPoints = { .element = CLAY_ATTACH_POINT_LEFT_TOP,
                                                 .parent = CLAY_ATTACH_POINT_LEFT_BOTTOM },
                               .pointerCaptureMode = CLAY_POINTER_CAPTURE_MODE_CAPTURE,

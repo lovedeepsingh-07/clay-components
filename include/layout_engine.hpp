@@ -44,6 +44,11 @@ namespace LayoutEngine {
             bool open{ false };
         };
         class CodeBlock : public Component {};
+        class ContextMenu : public Component {
+          public:
+            bool open{ false };
+            Vector2 spawn_pos;
+        };
     };
 
     struct Theme {

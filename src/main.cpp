@@ -50,23 +50,6 @@ int main() {
             true, (Clay_Vector2){ scroll_delta.x, scroll_delta.y }, delta_time
         );
 
-        // debug mode
-        if ((IsKeyDown(KEY_LEFT_CONTROL) || IsKeyDown(KEY_RIGHT_CONTROL))
-            && (IsKeyDown(KEY_LEFT_SHIFT) || IsKeyDown(KEY_RIGHT_SHIFT))
-            && IsKeyPressed(KEY_K)) {
-            Clay_SetDebugModeEnabled(!Clay_IsDebugModeEnabled());
-        }
-        // theme
-        if ((IsKeyDown(KEY_LEFT_CONTROL) || IsKeyDown(KEY_RIGHT_CONTROL))
-            && (IsKeyDown(KEY_LEFT_SHIFT) || IsKeyDown(KEY_RIGHT_SHIFT))
-            && IsKeyPressed(KEY_L)) {
-            if (layout_engine.get_curr_theme() == "dark") {
-                layout_engine.set_theme("light");
-            } else {
-                layout_engine.set_theme("dark");
-            }
-        }
-
         Clay_BeginLayout();
         demo::demo(layout_engine);
         Clay_RenderCommandArray renderCommands = Clay_EndLayout();

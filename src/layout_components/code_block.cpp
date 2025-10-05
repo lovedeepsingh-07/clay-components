@@ -8,6 +8,9 @@ void layout_components::code_block(
     Clay_String id_cs = layout_engine.frame_arena.alloc_clay_string(id);
     Clay_ElementId code_id = CLAY_SID(id_cs);
 
+    layout_engine.add_element(id, std::make_unique<LayoutEngine::component_context::CodeBlock>());
+    auto* ctx =
+        layout_engine.get_element<LayoutEngine::component_context::CodeBlock>(id);
     Clay_String code_string_cs = layout_engine.frame_arena.alloc_clay_string(text);
 
     CLAY(Clay_ElementDeclaration{

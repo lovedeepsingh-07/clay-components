@@ -39,7 +39,7 @@ void layout_components::modal(const std::string& id, LayoutEngine::LayoutEngine&
                 .layout = { .sizing = { .width = CLAY_SIZING_GROW(0), .height = CLAY_SIZING_GROW(0) },
                             .childAlignment = { .x = CLAY_ALIGN_X_CENTER, .y = CLAY_ALIGN_Y_CENTER } },
                 .backgroundColor = app_utils::raylib_to_clay(ColorAlpha(BLACK, 0.5)),
-                .floating = { .offset = { 0, 0 },
+                .floating = { .zIndex = 90,
                               .pointerCaptureMode = CLAY_POINTER_CAPTURE_MODE_CAPTURE,
                               .attachTo = CLAY_ATTACH_TO_ROOT } }) {
                 // content container
