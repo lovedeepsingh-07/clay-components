@@ -63,7 +63,7 @@ namespace LayoutEngine {
         std::string m_curr_theme_id;
 
       public:
-        MemoryArena::MemoryArena frame_arena{ MemoryArena::MemoryArena(1024) };
+        MemoryArena::MemoryArena frame_arena{ MemoryArena::MemoryArena(10240) };
         LayoutEngine() = default;
         ~LayoutEngine() = default;
 

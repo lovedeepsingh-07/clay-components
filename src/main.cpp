@@ -1,5 +1,4 @@
 #define CLAY_IMPLEMENTATION
-#include "demo.hpp"
 #include "js.hpp"
 #include "layout_components.hpp"
 #include "utils.hpp"
@@ -7,7 +6,7 @@
 #include <clay_raylib.hpp>
 
 int main() {
-    SetTraceLogLevel(LOG_NONE);
+    SetTraceLogLevel(LOG_NONE); // disable logging
     // window setup
     Clay_Raylib_Initialize(1280, 720, "clay-components", FLAG_WINDOW_RESIZABLE);
 
@@ -39,7 +38,8 @@ int main() {
         layout_engine.frame_arena.clear();
         // window state
         Vector2 mouse_pos = GetMousePosition();
-        Vector2 scroll_delta = GetMouseWheelMoveV();
+        Vector2 scroll_delta =
+            Vector2Scale(GetMouseWheelMoveV(), 2); // scroll delta scaled 2 times
         float delta_time = GetFrameTime();
 
         // update clay state
@@ -51,7 +51,16 @@ int main() {
         );
 
         Clay_BeginLayout();
-        demo::demo(layout_engine);
+        CLAY(Clay_ElementDeclaration{
+            .id = CLAY_ID("main_container"),
+            .layout = { .sizing = { .width = CLAY_SIZING_GROW(0), .height = CLAY_SIZING_GROW(0) },
+                        .padding = CLAY_PADDING_ALL(8),
+                        .layoutDirection = CLAY_TOP_TO_BOTTOM },
+            .clip = { .vertical = true, .childOffset = Clay_GetScrollOffset() } }) {
+            layout_components::context_menu("main_context_menu", layout_engine);
+            layout_components::navbar("navbar", layout_engine);
+            layout_components::hero("hero", layout_engine);
+        }
         Clay_RenderCommandArray renderCommands = Clay_EndLayout();
 
         BeginDrawing();

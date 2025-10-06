@@ -21,6 +21,7 @@
             pkgs.just
             pkgs.pkgsCross.mingwW64.buildPackages.gcc
             pkgs.clang-tools
+			pkgs.live-server
           ] ++ build-deps;
         };
         packages.default = pkgs.stdenv.mkDerivation {

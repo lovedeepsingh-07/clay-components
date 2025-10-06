@@ -17,4 +17,8 @@ namespace layout_components {
     void tabs(const std::string& id, LayoutEngine::LayoutEngine& layout_engine);
     void code_block(const std::string& id, const std::string& text, LayoutEngine::LayoutEngine& layout_engine);
     void context_menu(const std::string& id, LayoutEngine::LayoutEngine& layout_engine);
+
+    // components used in the actual website (they mostly don't require their own context in the LayoutEngine)
+    void navbar(const std::string& id, LayoutEngine::LayoutEngine& layout_engine);
+    void hero(const std::string& id, LayoutEngine::LayoutEngine& layout_engine);
 };

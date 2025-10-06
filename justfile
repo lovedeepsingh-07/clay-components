@@ -29,8 +29,7 @@ build-web:
 	cp {{BUILD_DIR}}/web/compile_commands.json {{BUILD_DIR}}/compile_commands.json
 	mkdir -p {{BUILD_DIR}}/public
 	cp {{BUILD_DIR}}/web/{{BINARY_NAME}}.* {{BUILD_DIR}}/public/
-	cp {{PUBLIC_DIR}}/index.html {{BUILD_DIR}}/public/
-	cp {{PUBLIC_DIR}}/style.css {{BUILD_DIR}}/public/
+	cp -r {{PUBLIC_DIR}}/* {{BUILD_DIR}}/public/
 serve: build-web
 	live-server {{BUILD_DIR}}/public --port=3000
 

@@ -9,9 +9,7 @@ void demo::demo(LayoutEngine::LayoutEngine& layout_engine) {
         .id = CLAY_ID("main_container"),
         .layout = { .sizing = { .width = CLAY_SIZING_GROW(0), .height = CLAY_SIZING_GROW(0) },
                     .childGap = 10,
-                    .layoutDirection = CLAY_TOP_TO_BOTTOM
-
-        } }) {
+                    .layoutDirection = CLAY_TOP_TO_BOTTOM } }) {
         // ------ header container ------
         CLAY(Clay_ElementDeclaration{
             .id = CLAY_ID("header_container"),
