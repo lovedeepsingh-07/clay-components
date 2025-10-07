@@ -9,7 +9,7 @@ void layout_components::hero(const std::string& id, LayoutEngine::LayoutEngine& 
     CLAY(Clay_ElementDeclaration{
         .id = hero_id,
         .layout = { .sizing = { .width = CLAY_SIZING_GROW(), .height = CLAY_SIZING_FIT() },
-                    .padding = { .top = 80 },
+                    .padding = { .top = 120, .bottom = 120 },
                     .childAlignment = { .x = CLAY_ALIGN_X_CENTER, .y = CLAY_ALIGN_Y_CENTER },
                     .layoutDirection = CLAY_TOP_TO_BOTTOM } }) {
         CLAY_TEXT(
@@ -28,14 +28,14 @@ void layout_components::hero(const std::string& id, LayoutEngine::LayoutEngine& 
                 .fontSize = 64,
             })
         );
-        // ------ CTA button ------
-        CLAY(Clay_ElementDeclaration{
-            .layout = { .sizing = { .width = CLAY_SIZING_FIT(), .height = CLAY_SIZING_FIT() },
-                        .padding = { .top = 20 },
-                        .childAlignment = { .x = CLAY_ALIGN_X_CENTER, .y = CLAY_ALIGN_Y_CENTER } } }) {
-            if (layout_components::button(id + "_cta_button", "Get Started", layout_engine)) {
-                printf("Hero CTA button works!\n");
-            }
-        }
+        // // ------ CTA button ------
+        // CLAY(Clay_ElementDeclaration{
+        //     .layout = { .sizing = { .width = CLAY_SIZING_FIT(), .height = CLAY_SIZING_FIT() },
+        //                 .padding = { .top = 20 },
+        //                 .childAlignment = { .x = CLAY_ALIGN_X_CENTER, .y = CLAY_ALIGN_Y_CENTER } } }) {
+        //     if (layout_components::button(id + "_cta_button", "Get Started", layout_engine)) {
+        //         printf("Hero CTA button works!\n");
+        //     }
+        // }
     }
 }

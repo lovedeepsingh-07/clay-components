@@ -1,4 +1,5 @@
 #define CLAY_IMPLEMENTATION
+#include "demo.hpp"
 #include "js.hpp"
 #include "layout_components.hpp"
 #include "utils.hpp"
@@ -54,12 +55,14 @@ int main() {
         CLAY(Clay_ElementDeclaration{
             .id = CLAY_ID("main_container"),
             .layout = { .sizing = { .width = CLAY_SIZING_GROW(0), .height = CLAY_SIZING_GROW(0) },
-                        .padding = CLAY_PADDING_ALL(8),
+                        .padding = { .left = 8, .right = 8, .top = 8, .bottom = 80 },
                         .layoutDirection = CLAY_TOP_TO_BOTTOM },
             .clip = { .vertical = true, .childOffset = Clay_GetScrollOffset() } }) {
             layout_components::context_menu("main_context_menu", layout_engine);
             layout_components::navbar("navbar", layout_engine);
             layout_components::hero("hero", layout_engine);
+            layout_components::introduction("introduction", layout_engine);
+            demo::button("button_demo", layout_engine);
         }
         Clay_RenderCommandArray renderCommands = Clay_EndLayout();
 

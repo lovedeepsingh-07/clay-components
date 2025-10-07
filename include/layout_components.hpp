@@ -21,4 +21,5 @@ namespace layout_components {
     // components used in the actual website (they mostly don't require their own context in the LayoutEngine)
     void navbar(const std::string& id, LayoutEngine::LayoutEngine& layout_engine);
     void hero(const std::string& id, LayoutEngine::LayoutEngine& layout_engine);
+    void introduction(const std::string& id, LayoutEngine::LayoutEngine& layout_engine);
 };
