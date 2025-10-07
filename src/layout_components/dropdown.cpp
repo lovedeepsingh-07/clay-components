@@ -26,7 +26,7 @@ void layout_components::dropdown(const std::string& id, LayoutEngine::LayoutEngi
 
     CLAY(Clay_ElementDeclaration{ .id = dropdown_id }) {
         // dropdown button
-        if (layout_components::button(id + "_DROPDOWN_BUTTON", "dropdown_button", layout_engine)) {
+        if (layout_components::button(id + "_DROPDOWN_BUTTON", "dropdown_button", "primary", layout_engine)) {
             ctx->open = !ctx->open;
         };
         if (ctx->open) {

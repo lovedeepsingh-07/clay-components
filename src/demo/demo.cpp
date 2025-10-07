@@ -17,14 +17,14 @@ void demo::demo(LayoutEngine::LayoutEngine& layout_engine) {
                         .padding = CLAY_PADDING_ALL(8),
                         .childGap = 8,
                         .childAlignment = { .x = CLAY_ALIGN_X_RIGHT, .y = CLAY_ALIGN_Y_CENTER } } }) {
-            if (layout_components::button("theme_button", "theme", layout_engine)) {
+            if (layout_components::button("theme_button", "theme", "primary", layout_engine)) {
                 if (layout_engine.get_curr_theme() == "dark") {
                     layout_engine.set_theme("light");
                 } else {
                     layout_engine.set_theme("dark");
                 }
             }
-            if (layout_components::button("github_button", "github", layout_engine)) {
+            if (layout_components::button("github_button", "github", "primary", layout_engine)) {
 #ifdef __EMSCRIPTEN__
                 js::open_link("https://github.com/lovedeepsingh-07/"
                               "clay-components");
@@ -43,7 +43,7 @@ void demo::demo(LayoutEngine::LayoutEngine& layout_engine) {
             CLAY(Clay_ElementDeclaration{
                 .layout = { .sizing = { .width = CLAY_SIZING_GROW(0), .height = CLAY_SIZING_GROW(0) },
                             .childGap = 8 } }) {
-                if (layout_components::button("button", "button", layout_engine)) {
+                if (layout_components::button("button", "button", "primary", layout_engine)) {
 #ifdef __EMSCRIPTEN__
                     js::alert("button clicked!");
 #else

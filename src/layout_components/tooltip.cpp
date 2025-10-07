@@ -42,7 +42,7 @@ void layout_components::tooltip(const std::string& id, LayoutEngine::LayoutEngin
                     .childAlignment = { .x = CLAY_ALIGN_X_CENTER, .y = CLAY_ALIGN_Y_CENTER } },
     }) {
         // acutal content
-        if (layout_components::button("tooltip_button", "tooltip_button", layout_engine)) {
+        if (layout_components::button("tooltip_button", "tooltip_button", "primary", layout_engine)) {
 #ifdef __EMSCRIPTEN__
             js::alert("tooltip button clicked!");
 #else

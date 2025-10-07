@@ -10,20 +10,8 @@ void layout_components::checkbox(const std::string& id, LayoutEngine::LayoutEngi
 
     // checkbox state configuration
     bool hovering = Clay_PointerOver(checkbox_id);
-    if (hovering && !ctx->hovered) {
-        ctx->hovered = true;
-    }
-    if (!hovering && ctx->hovered) {
-        ctx->hovered = false;
-    }
     if (hovering && IsMouseButtonPressed(MOUSE_BUTTON_LEFT)) {
-        ctx->pressed = true;
-    }
-    if (hovering && IsMouseButtonReleased(MOUSE_BUTTON_LEFT) && ctx->pressed) {
         ctx->checked = !ctx->checked;
-    }
-    if (IsMouseButtonReleased(MOUSE_BUTTON_LEFT) && ctx->pressed) {
-        ctx->pressed = false;
     }
 
     // color values

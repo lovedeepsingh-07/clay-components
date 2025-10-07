@@ -1,7 +1,9 @@
 #include "layout_components.hpp"
 #include "utils.hpp"
 
-bool layout_components::button(const std::string& id, const std::string& text, LayoutEngine::LayoutEngine& layout_engine) {
+bool layout_components::button(
+    const std::string& id, const std::string& text, const std::string& variant, LayoutEngine::LayoutEngine& layout_engine
+) {
     Clay_String id_cs = layout_engine.frame_arena.alloc_clay_string(id);
     Clay_ElementId button_id = CLAY_SID(id_cs);
 
@@ -11,28 +13,16 @@ bool layout_components::button(const std::string& id, const std::string& text, L
 
     // button state configuration
     bool hovering = Clay_PointerOver(button_id);
-    if (hovering && !ctx->hovered) {
-        ctx->hovered = true;
-    }
-    if (!hovering && ctx->hovered) {
-        ctx->hovered = false;
-    }
     if (hovering && IsMouseButtonPressed(MOUSE_BUTTON_LEFT)) {
-        ctx->pressed = true;
-    }
-    if (hovering && IsMouseButtonReleased(MOUSE_BUTTON_LEFT) && ctx->pressed) {
         button_clicked = true;
-    }
-    if (IsMouseButtonReleased(MOUSE_BUTTON_LEFT) && ctx->pressed) {
-        ctx->pressed = false;
     }
 
     // color values
     Color button_background_color =
-        Fade(layout_engine.get_color("primary"), (float)((ctx->hovered || ctx->pressed) ? 0.85 : 1));
-    Color button_foreground_color = layout_engine.get_color("primary-foreground");
+        Fade(layout_engine.get_color(variant), (float)(hovering ? 0.85 : 1));
+    Color button_foreground_color = layout_engine.get_color(variant + "-foreground");
     Color button_border_color =
-        ColorAlpha(layout_engine.get_color("border"), (float)((ctx->hovered || ctx->pressed) ? 0.85 : 1));
+        ColorAlpha(layout_engine.get_color("border"), (float)(hovering ? 0.85 : 1));
 
     CLAY(Clay_ElementDeclaration{
         .id = button_id,

@@ -13,15 +13,9 @@ namespace LayoutEngine {
           public:
             virtual ~Component() = default;
         };
-        class Button : public Component {
-          public:
-            bool hovered{ false }; // mouse is hovering over the button
-            bool pressed{ false }; // mouse was clicked but never released
-        };
+        class Button : public Component {};
         class Checkbox : public Component {
           public:
-            bool hovered{ false };
-            bool pressed{ false };
             bool checked{ false };
         };
         class Input : public Component {

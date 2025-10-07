@@ -14,47 +14,52 @@ void layout_components::navbar(const std::string& id, LayoutEngine::LayoutEngine
     CLAY(Clay_ElementDeclaration{
         .id = navbar_id,
         .layout = { .sizing = { .width = CLAY_SIZING_GROW(), .height = CLAY_SIZING_FIT() },
-                    .padding = CLAY_PADDING_ALL(8),
-                    .childGap = 8 } }) {
-        // ------ title button ------
-        if (hovering_title_button && IsMouseButtonReleased(MOUSE_BUTTON_LEFT)) {
-#ifdef __EMSCRIPTEN__
-            js::goto_link("/");
-#else
-            printf("clicked navbar title button\n");
-#endif
-        }
+                    .childAlignment = { .x = CLAY_ALIGN_X_CENTER, .y = CLAY_ALIGN_Y_CENTER } } }) {
         CLAY(Clay_ElementDeclaration{
-            .id = title_button_id,
-            .layout = { .sizing = { .width = CLAY_SIZING_FIT(), .height = CLAY_SIZING_FIT() } } }) {
-            CLAY_TEXT(
-                CLAY_STRING("clay-components"),
-                CLAY_TEXT_CONFIG(Clay_TextElementConfig{
-                    .textColor = app_utils::raylib_to_clay(layout_engine.get_color("foreground")),
-                    .fontId = 0,
-                    .fontSize = 32,
-                })
-            );
-        }
-        // ------ filling ------
-        CLAY(Clay_ElementDeclaration{
-            .layout = { .sizing = { .width = CLAY_SIZING_GROW(),
-                                    .height = CLAY_SIZING_FIT() } } }) {}
-        // ------ github button ------
-        if (layout_components::button("github_button", "github", layout_engine)) {
+            .layout = { .sizing = { .width = CLAY_SIZING_GROW(0, 1200), .height = CLAY_SIZING_FIT() },
+                        .padding = CLAY_PADDING_ALL(8),
+                        .childGap = 8 } }) {
+            // ------ title button ------
+            if (hovering_title_button && IsMouseButtonReleased(MOUSE_BUTTON_LEFT)) {
 #ifdef __EMSCRIPTEN__
-            js::open_link("https://github.com/lovedeepsingh-07/"
-                          "clay-components");
+                js::goto_link("/");
 #else
-            printf("github button clicked!\n");
+                printf("clicked navbar title button\n");
 #endif
-        }
-        // ------ theme button ------
-        if (layout_components::button("theme_button", "theme", layout_engine)) {
-            if (layout_engine.get_curr_theme() == "dark") {
-                layout_engine.set_theme("light");
-            } else {
-                layout_engine.set_theme("dark");
+            }
+            CLAY(Clay_ElementDeclaration{
+                .id = title_button_id,
+                .layout = { .sizing = { .width = CLAY_SIZING_FIT(),
+                                        .height = CLAY_SIZING_FIT() } } }) {
+                CLAY_TEXT(
+                    CLAY_STRING("clay-components"),
+                    CLAY_TEXT_CONFIG(Clay_TextElementConfig{
+                        .textColor = app_utils::raylib_to_clay(layout_engine.get_color("foreground")),
+                        .fontId = 0,
+                        .fontSize = 32,
+                    })
+                );
+            }
+            // ------ filling ------
+            CLAY(Clay_ElementDeclaration{
+                .layout = { .sizing = { .width = CLAY_SIZING_GROW(),
+                                        .height = CLAY_SIZING_FIT() } } }) {}
+            // ------ github button ------
+            if (layout_components::button("github_button", "github", "primary", layout_engine)) {
+#ifdef __EMSCRIPTEN__
+                js::open_link("https://github.com/lovedeepsingh-07/"
+                              "clay-components");
+#else
+                printf("github button clicked!\n");
+#endif
+            }
+            // ------ theme button ------
+            if (layout_components::button("theme_button", "theme", "primary", layout_engine)) {
+                if (layout_engine.get_curr_theme() == "dark") {
+                    layout_engine.set_theme("light");
+                } else {
+                    layout_engine.set_theme("dark");
+                }
             }
         }
     }

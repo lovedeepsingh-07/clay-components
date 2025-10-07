@@ -23,7 +23,7 @@ int main() {
     );
 
     // font setup
-    std::array<Font, 1> font_list;
+    std::array<Font, 2> font_list;
     font_list[0] =
         LoadFontEx("./assets/JetBrainsMonoNLNerdFontComplete-Regular.ttf", 48, NULL, 400);
     SetTextureFilter(font_list[0].texture, TEXTURE_FILTER_BILINEAR);
@@ -63,6 +63,7 @@ int main() {
             layout_components::hero("hero", layout_engine);
             layout_components::introduction("introduction", layout_engine);
             demo::button("button_demo", layout_engine);
+            demo::checkbox("checkbox_demo", layout_engine);
         }
         Clay_RenderCommandArray renderCommands = Clay_EndLayout();
 

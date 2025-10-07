@@ -26,7 +26,7 @@ void layout_components::modal(const std::string& id, LayoutEngine::LayoutEngine&
     }
 
     // modal button
-    if (layout_components::button(id + "_button", "modal_button", layout_engine)) {
+    if (layout_components::button(id + "_button", "modal_button", "primary", layout_engine)) {
         ctx->open = true;
     }
 

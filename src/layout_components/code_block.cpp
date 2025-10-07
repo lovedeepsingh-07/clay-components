@@ -29,7 +29,7 @@ void layout_components::code_block(
                                             .parent = CLAY_ATTACH_POINT_RIGHT_TOP },
                           .pointerCaptureMode = CLAY_POINTER_CAPTURE_MODE_CAPTURE,
                           .attachTo = CLAY_ATTACH_TO_PARENT } }) {
-            if (layout_components::button("copy_code_button", "copy", layout_engine)) {
+            if (layout_components::button("copy_code_button", "copy", "primary", layout_engine)) {
 #ifdef __EMSCRIPTEN__
                 js::copy_to_clipboard(text.c_str());
 #else
