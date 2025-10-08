@@ -59,7 +59,7 @@ void layout_components::context_menu(const std::string& id, LayoutEngine::Layout
                             hovering_debug_button ? "primary-foreground" : "card-foreground"
                         )),
                         .fontId = 0,
-                        .fontSize = 24,
+                        .fontSize = 20,
                     })
                 );
             }

@@ -40,12 +40,8 @@
           '';
           installPhase = ''
             mkdir -p $out/bin
-            cp build/web/clay-components.js $out/bin/
-            cp build/web/clay-components.wasm $out/bin/
-            cp build/web/clay-components.data $out/bin/
-            cp public/index.html $out/bin/
-            cp public/style.css $out/bin/
-            cp public/script.js $out/bin/
+            cp build/web/clay-components.* $out/bin/
+            cp -r public/* $out/bin/
           '';
         };
         apps.setup = flake-utils.lib.mkApp {

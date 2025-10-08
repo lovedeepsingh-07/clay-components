@@ -35,7 +35,7 @@ void layout_components::checkbox(const std::string& id, LayoutEngine::LayoutEngi
                 CLAY_TEXT_CONFIG(Clay_TextElementConfig{
                     .textColor = app_utils::raylib_to_clay(checkbox_foreground_color),
                     .fontId = 0,
-                    .fontSize = 24,
+                    .fontSize = 20,
                 })
             );
         }

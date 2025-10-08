@@ -22,12 +22,12 @@ void LayoutEngine::LayoutEngine::setup() {
 			{ "input", { 55, 36, 40, 255 } }, 
 			{ "ring", { 67, 49, 53, 255 } }, 
 		}, 
-		.radius = 6.0F 
+		.radius = 8.0F 
 	});
     this->add_theme("dark", Theme{ .colors = {
-			{"background", {14, 11, 12, 255}},
+			{"background", {2, 2, 2, 255}}, 
 			{"foreground", {230, 228, 229, 255}},
-			{"card", {2, 2, 2, 255}},
+			{"card", {14, 11, 12, 255}},
 			{"card-foreground", {230, 228, 229, 255}},
 			{"popover", {14, 11, 12, 255}},
 			{"popover-foreground", {230, 228, 229, 255}},

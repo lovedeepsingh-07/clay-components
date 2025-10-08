@@ -19,14 +19,14 @@ bool layout_components::button(
 
     // color values
     Color button_background_color =
-        Fade(layout_engine.get_color(variant), (float)(hovering ? 0.85 : 1));
+        ColorAlpha(layout_engine.get_color(variant), (float)(hovering ? 0.85 : 1));
     Color button_foreground_color = layout_engine.get_color(variant + "-foreground");
     Color button_border_color =
         ColorAlpha(layout_engine.get_color("border"), (float)(hovering ? 0.85 : 1));
 
     CLAY(Clay_ElementDeclaration{
         .id = button_id,
-        .layout = { .sizing = { .width = CLAY_SIZING_FIT(120), .height = CLAY_SIZING_FIT(20) },
+        .layout = { .sizing = { .width = CLAY_SIZING_FIT(92), .height = CLAY_SIZING_FIT(20) },
                     .padding = { .left = 8, .right = 8, .top = 6, .bottom = 6 },
                     .childAlignment = { .x = CLAY_ALIGN_X_CENTER, .y = CLAY_ALIGN_Y_CENTER },
                     .layoutDirection = CLAY_TOP_TO_BOTTOM },
@@ -40,7 +40,7 @@ bool layout_components::button(
             CLAY_TEXT_CONFIG(Clay_TextElementConfig{
                 .textColor = app_utils::raylib_to_clay(button_foreground_color),
                 .fontId = 0,
-                .fontSize = 24,
+                .fontSize = 20,
             })
         );
     };

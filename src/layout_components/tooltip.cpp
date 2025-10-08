@@ -76,7 +76,7 @@ void layout_components::tooltip(const std::string& id, LayoutEngine::LayoutEngin
                         CLAY_TEXT_CONFIG(Clay_TextElementConfig{
                             .textColor = app_utils::raylib_to_clay(tooltip_foreground_color),
                             .fontId = 0,
-                            .fontSize = 24,
+                            .fontSize = 20,
                         })
                     );
                 }

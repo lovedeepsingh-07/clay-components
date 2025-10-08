@@ -77,7 +77,7 @@ void layout_components::tabs(const std::string& id, LayoutEngine::LayoutEngine& 
                                 (ctx != nullptr && ctx->curr_tab == ctx->tab_list[i]) ? "primary-foreground" : "card-foreground"
                             )),
                             .fontId = 0,
-                            .fontSize = 24,
+                            .fontSize = 20,
                         })
                     );
                 };
@@ -110,7 +110,7 @@ void layout_components::tabs(const std::string& id, LayoutEngine::LayoutEngine& 
                         CLAY_TEXT_CONFIG(Clay_TextElementConfig{
                             .textColor = app_utils::raylib_to_clay(layout_engine.get_color("card-foreground")),
                             .fontId = 0,
-                            .fontSize = 24,
+                            .fontSize = 20,
                         })
                     );
                 }

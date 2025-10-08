@@ -61,7 +61,7 @@ void layout_components::modal(const std::string& id, LayoutEngine::LayoutEngine&
                         CLAY_TEXT_CONFIG(Clay_TextElementConfig{
                             .textColor = app_utils::raylib_to_clay(layout_engine.get_color("card-foreground")),
                             .fontId = 0,
-                            .fontSize = 24,
+                            .fontSize = 20,
                         })
                     );
                 }
