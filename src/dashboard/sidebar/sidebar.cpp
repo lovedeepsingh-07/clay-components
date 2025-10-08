@@ -12,20 +12,16 @@ void dashboard::sidebar::sidebar(LayoutEngine::LayoutEngine& layout_engine) {
 
     CLAY(Clay_ElementDeclaration{
         .id = sidebar_id,
-        .layout = { .sizing = { .width = CLAY_SIZING_GROW(0, 360), .height = CLAY_SIZING_GROW() },
-                    .padding = CLAY_PADDING_ALL(8),
+        .layout = { .sizing = { .width = CLAY_SIZING_GROW(0, 300), .height = CLAY_SIZING_GROW() },
+                    .padding = CLAY_PADDING_ALL(10),
+                    .childGap = 16,
                     .layoutDirection = CLAY_TOP_TO_BOTTOM },
         .backgroundColor = app_utils::raylib_to_clay(background_color) }) {
-        // CLAY_TEXT(
-        //     CLAY_STRING("Sidebar"),
-        //     CLAY_TEXT_CONFIG(Clay_TextElementConfig{
-        //         .textColor = app_utils::raylib_to_clay(foreground_color),
-        //         .fontId = 0,
-        //         .fontSize = 24,
-        //     })
-        // );
         dashboard::sidebar::header(layout_engine);
         dashboard::sidebar::body(layout_engine);
+        CLAY(Clay_ElementDeclaration{
+            .layout = { .sizing = { .width = CLAY_SIZING_GROW(),
+                                    .height = CLAY_SIZING_GROW() } } }) {}
         dashboard::sidebar::footer(layout_engine);
     }
 }

@@ -11,14 +11,14 @@ void dashboard::sidebar::header(LayoutEngine::LayoutEngine& layout_engine) {
 
     CLAY(Clay_ElementDeclaration{
         .id = header_id,
-        .layout = { .sizing = { .width = CLAY_SIZING_GROW(0), .height = CLAY_SIZING_FIT() },
+        .layout = { .sizing = { .width = CLAY_SIZING_GROW(), .height = CLAY_SIZING_FIT() },
                     .layoutDirection = CLAY_LEFT_TO_RIGHT } }) {
         CLAY_TEXT(
-            CLAY_STRING("Header"),
+            CLAY_STRING("clay-components"),
             CLAY_TEXT_CONFIG(Clay_TextElementConfig{
                 .textColor = app_utils::raylib_to_clay(foreground_color),
                 .fontId = 0,
-                .fontSize = 24,
+                .fontSize = 28,
             })
         );
     }
