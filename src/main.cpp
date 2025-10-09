@@ -1,7 +1,5 @@
 #define CLAY_IMPLEMENTATION
 #include "dashboard.hpp"
-#include "js.hpp"
-#include "layout_components.hpp"
 #include "utils.hpp"
 #include <array>
 #include <clay_raylib.hpp>
@@ -56,7 +54,7 @@ int main() {
             .id = CLAY_ID("main_container"),
             .layout = { .sizing = { .width = CLAY_SIZING_GROW(0), .height = CLAY_SIZING_GROW(0) },
                         .layoutDirection = CLAY_TOP_TO_BOTTOM } }) {
-            layout_components::context_menu("main_context_menu", layout_engine);
+            dashboard::context_menu("main_context_menu", layout_engine);
             dashboard::dashboard(layout_engine);
         }
         Clay_RenderCommandArray renderCommands = Clay_EndLayout();

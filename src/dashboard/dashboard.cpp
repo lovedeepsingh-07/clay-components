@@ -1,5 +1,4 @@
 #include "dashboard.hpp"
-#include "layout_components.hpp"
 #include "utils.hpp"
 
 void dashboard::dashboard(LayoutEngine::LayoutEngine& layout_engine) {
@@ -8,6 +7,9 @@ void dashboard::dashboard(LayoutEngine::LayoutEngine& layout_engine) {
 
     Color background_color = layout_engine.get_color("card");
 
+    // context menu
+    dashboard::context_menu("main_context_menu", layout_engine);
+    // actual dashboard
     CLAY(Clay_ElementDeclaration{
         .id = dashboard_id,
         .layout = { .sizing = { .width = CLAY_SIZING_GROW(), .height = CLAY_SIZING_GROW() },

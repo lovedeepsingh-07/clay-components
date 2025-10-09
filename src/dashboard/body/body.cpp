@@ -1,5 +1,4 @@
 #include "dashboard.hpp"
-#include "layout_components.hpp"
 #include "utils.hpp"
 #include <array>
 
@@ -93,20 +92,7 @@ void dashboard::body::body(LayoutEngine::LayoutEngine& layout_engine) {
                 }
             }
         }
-        // CLAY_TEXT(
-        //     CLAY_STRING("Body"),
-        //     CLAY_TEXT_CONFIG(Clay_TextElementConfig{
-        //         .textColor = app_utils::raylib_to_clay(foreground_color),
-        //         .fontId = 0,
-        //         .fontSize = 48,
-        //     })
-        // );
         // ------ table ------
-        CLAY(Clay_ElementDeclaration{
-            .layout = { .sizing = { .width = CLAY_SIZING_GROW(), .height = CLAY_SIZING_FIT() },
-                        .padding = { 12, 12, 40, 12 },
-                        .childGap = 20,
-                        .childAlignment = { .x = CLAY_ALIGN_X_CENTER,
-                                            .y = CLAY_ALIGN_Y_CENTER } } }) {}
+        dashboard::body::body_table("body_table", layout_engine);
     }
 }

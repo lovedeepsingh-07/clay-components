@@ -1,7 +1,7 @@
-#include "layout_components.hpp"
+#include "dashboard.hpp"
 #include "utils.hpp"
 
-void layout_components::context_menu(const std::string& id, LayoutEngine::LayoutEngine& layout_engine) {
+void dashboard::context_menu(const std::string& id, LayoutEngine::LayoutEngine& layout_engine) {
     Clay_String id_cs = layout_engine.frame_arena.alloc_clay_string(id);
     Clay_ElementId context_menu_id = CLAY_SID(id_cs);
 

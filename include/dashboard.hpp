@@ -2,6 +2,7 @@
 
 namespace dashboard {
     void dashboard(LayoutEngine::LayoutEngine& layout_engine);
+    void context_menu(const std::string& id, LayoutEngine::LayoutEngine& layout_engine);
     namespace sidebar {
         void sidebar(LayoutEngine::LayoutEngine& layout_engine);
         void sidebar_dropdown(const std::string& id, bool hovering_curr_item, LayoutEngine::LayoutEngine& layout_engine);
@@ -13,5 +14,6 @@ namespace dashboard {
         void navbar(LayoutEngine::LayoutEngine& layout_engine);
         bool navbar_button(const std::string& id, const std::string& text, LayoutEngine::LayoutEngine& layout_engine);
         void body(LayoutEngine::LayoutEngine& layout_engine);
+        void body_table(const std::string& id, LayoutEngine::LayoutEngine& layout_engine);
     }
 };

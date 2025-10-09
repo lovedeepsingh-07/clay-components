@@ -1,5 +1,4 @@
 #include "dashboard.hpp"
-#include "layout_components.hpp"
 #include "utils.hpp"
 
 void dashboard::sidebar::header(LayoutEngine::LayoutEngine& layout_engine) {
