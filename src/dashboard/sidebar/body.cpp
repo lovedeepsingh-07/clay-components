@@ -1,5 +1,4 @@
 #include "dashboard.hpp"
-#include "layout_components.hpp"
 #include "utils.hpp"
 #include <array>
 
@@ -14,6 +13,7 @@ void dashboard::sidebar::body(LayoutEngine::LayoutEngine& layout_engine) {
         layout_engine.frame_arena.alloc_clay_string("dashboard_sidebar_body");
     Clay_ElementId body_id = CLAY_SID(body_id_cs);
 
+    // state configuration variables
     float corner_radius = layout_engine.get_radius();
     Color background_color = layout_engine.get_color("card");
     Color foreground_color = layout_engine.get_color("card-foreground");
@@ -62,7 +62,7 @@ void dashboard::sidebar::body(LayoutEngine::LayoutEngine& layout_engine) {
         .layout = { .sizing = { .width = CLAY_SIZING_GROW(), .height = CLAY_SIZING_FIT() },
                     .padding = { .bottom = 8 } },
         .border = { .color = app_utils::raylib_to_clay(border_color),
-                    .width = { 0, 0, 0, 2, 0 } } }) {
+                    .width = { 0, 0, 0, 1, 0 } } }) {
         CLAY_TEXT(
             CLAY_STRING("Documents"),
             CLAY_TEXT_CONFIG(Clay_TextElementConfig{
@@ -87,7 +87,8 @@ void dashboard::sidebar::body(LayoutEngine::LayoutEngine& layout_engine) {
                 .id = curr_id,
                 .layout = { .sizing = { .width = CLAY_SIZING_GROW(0, 220),
                                         .height = CLAY_SIZING_FIT() },
-                            .padding = CLAY_PADDING_ALL(6) },
+                            .padding = CLAY_PADDING_ALL(6),
+                            .childAlignment = { .y = CLAY_ALIGN_Y_CENTER } },
                 .backgroundColor = app_utils::raylib_to_clay(
                     hovering_curr_item ? ColorAlpha(layout_engine.get_color("accent"), 0.85) : background_color
                 ),
@@ -100,6 +101,10 @@ void dashboard::sidebar::body(LayoutEngine::LayoutEngine& layout_engine) {
                         .fontSize = 20,
                     })
                 );
+                CLAY(Clay_ElementDeclaration{
+                    .layout = { .sizing = { .width = CLAY_SIZING_GROW(),
+                                            .height = CLAY_SIZING_FIT() } } }) {}
+                dashboard::sidebar::sidebar_dropdown(curr_item + "_dropdown", hovering_curr_item, layout_engine);
             }
         }
     }
